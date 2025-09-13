@@ -261,8 +261,7 @@
                     <div class="p-4">
                         <h4 class="font-semibold text-gray-800 mb-2">Kelas 10</h4>
                         <div class="flex justify-between items-center">
-                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Materi PPT</span>
-                            <a href="https://drive.google.com/drive/folders/1HW5DaWmw2IQO5WKNskX8LB6SrU8YzTnD?usp=sharing" target="_blank" class="text-bio-green font-semibold text-sm">Lihat Materi →</a>
+                            <a href="https://drive.google.com/drive/folders/15ZHVdzLacpxH5UDkuQxBTc6NbM-Mu3QF?usp=drive_link" target="_blank" class="text-bio-green font-semibold text-sm">Lihat Materi →</a>
                         </div>
                     </div>
                 </div>
@@ -274,8 +273,7 @@
                     <div class="p-4">
                         <h4 class="font-semibold text-gray-800 mb-2">Kelas 11</h4>
                         <div class="flex justify-between items-center">
-                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Materi PPT</span>
-                            <a href="https://drive.google.com/drive/folders/1N2-TRlnWWNRmzrBrZubGPQ3275oUEqae?usp=drive_link" target="_blank" class="text-bio-blue font-semibold text-sm">Lihat Materi →</a>
+                            <a href="https://drive.google.com/drive/folders/1L4I5sKFT5oOp-9BSD8cGHxJ5tls-9wLi?usp=drive_link" target="_blank" class="text-bio-blue font-semibold text-sm">Lihat Materi →</a>
                         </div>
                     </div>
                 </div>
@@ -287,8 +285,7 @@
                     <div class="p-4">
                         <h4 class="font-semibold text-gray-800 mb-2">Kelas 12</h4>
                         <div class="flex justify-between items-center">
-                            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">Materi PPT</span>
-                            <a href="https://drive.google.com/drive/folders/1EL_31Vyki1I0EsuCW7_f6iS33lW0HtMN?usp=drive_link" target="_blank" class="text-purple-600 font-semibold text-sm">Lihat Materi →</a>
+                            <a href="https://drive.google.com/drive/folders/1Sfg9jMGDf0IFy8XgHIt-145ATjN9bBjG?usp=drive_link" target="_blank" class="text-purple-600 font-semibold text-sm">Lihat Materi →</a>
                         </div>
                     </div>
                 </div>
@@ -320,8 +317,8 @@
 
         // Data yang disimpan di browser (akan hilang jika halaman direfresh)
         let videoList = JSON.parse(localStorage.getItem('videoList')) || [
-            { title: 'Dasar-dasar Genetika', url: 'https://www.youtube.com/embed/SWMG0_39w9E' },
-            { title: 'Sistem Pencernaan Manusia', url: 'https://www.youtube.com/embed/5' }
+            { title: 'Dasar-dasar Genetika', url: 'https://www.youtube.com/embed/g2J0-Y6kR4Q' },
+            { title: 'Sistem Pencernaan Manusia', url: 'https://www.youtube.com/embed/8-P_z2aY_kQ' }
         ];
 
         let quizList = JSON.parse(localStorage.getItem('quizList')) || [
@@ -341,9 +338,9 @@
         let motivationQuote = localStorage.getItem('motivationQuote') || `"Ilmu Biologi adalah tentang kehidupan, begitu juga semangatmu."`;
 
         const materiList = [
-            { title: 'Kelas 10', url: 'https://drive.google.com/drive/folders/1HW5DaWmw2IQO5WKNskX8LB6SrU8YzTnD?usp=sharing' },
-            { title: 'Kelas 11', url: 'https://drive.google.com/drive/folders/1N2-TRlnWWNRmzrBrZubGPQ3275oUEqae?usp=drive_link' },
-            { title: 'Kelas 12', url: 'https://drive.google.com/drive/folders/1EL_31Vyki1I0EsuCW7_f6iS33lW0HtMN?usp=drive_link' }
+            { title: 'Kelas 10', url: 'https://drive.google.com/drive/folders/15ZHVdzLacpxH5UDkuQxBTc6NbM-Mu3QF?usp=drive_link' },
+            { title: 'Kelas 11', url: 'https://drive.google.com/drive/folders/1L4I5sKFT5oOp-9BSD8cGHxJ5tls-9wLi?usp=drive_link' },
+            { title: 'Kelas 12', url: 'https://drive.google.com/drive/folders/1Sfg9jMGDf0IFy8XgHIt-145ATjN9bBjG?usp=drive_link' }
         ];
 
         // Function untuk membuka dan menutup modal
@@ -435,7 +432,7 @@
                             <h5 class="font-medium text-gray-800">${item.title}</h5>
                             <p class="text-sm text-gray-500 truncate w-64">${item.url}</p>
                         </div>
-                        <button onclick="removeLink(${containerId}, ${index}, ${removeFn}, '${storageKey}')" class="text-red-500 hover:text-red-700 font-semibold text-sm">Hapus</button>
+                        <button onclick="removeLink(window.${containerId}, ${index}, window.${removeFn}, '${storageKey}')" class="text-red-500 hover:text-red-700 font-semibold text-sm">Hapus</button>
                     `;
                     container.appendChild(itemDiv);
                 });
