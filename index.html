@@ -130,7 +130,7 @@
             </div>
         </div>
     </div>
-    
+
     <div id="materiAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
             <div class="flex justify-between items-center mb-4">
@@ -138,7 +138,7 @@
                 <button onclick="closeModal('materiAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
             </div>
             <div id="materiLinksContainer" class="space-y-4">
-                </div>
+            </div>
         </div>
     </div>
 
@@ -149,7 +149,7 @@
                 <button onclick="closeModal('quizAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
             </div>
             <div id="quizLinksContainer" class="space-y-4">
-                </div>
+            </div>
         </div>
     </div>
 
@@ -160,7 +160,18 @@
                 <button onclick="closeModal('tkaAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
             </div>
             <div id="tkaLinksContainer" class="space-y-4">
-                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="videoAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Pilih Video Belajar</h3>
+                <button onclick="closeModal('videoAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="videoLinksContainer" class="space-y-4">
+            </div>
         </div>
     </div>
 
@@ -224,15 +235,25 @@
                         <h3 class="font-semibold text-gray-800">Info PTN</h3>
                         <span class="text-2xl">🎓</span>
                     </div>
-                    <div id="ptnInfoContainer" class="space-y-2">
-                        </div>
+                    <div class="flex flex-col space-y-2">
+                        <a href="https://snpmb.bppp.kemdikbud.go.id/" target="_blank" class="block text-sm text-gray-700 underline hover:text-bio-blue">
+                            ➤ Cek Info SNPMB
+                        </a>
+                        <div id="ptnInfoContainer" class="space-y-2">
+                            </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <section class="mb-8">
             <h3 class="text-xl font-bold text-gray-800 mb-4">Akses Cepat</h3>
-            <div class="grid md:grid-cols-3 gap-4">
+            <div class="grid md:grid-cols-4 gap-4">
+                <a href="https://drive.google.com/file/d/1wAQbkMtNznHleicdh1_axS8FjthMRFlJ/view?usp=drive_link" target="_blank" class="bg-red-500 text-white p-4 rounded-xl card-hover text-center block">
+                    <div class="text-2xl mb-2">▶️</div>
+                    <div class="font-semibold">Video Belajar</div>
+                    <div class="text-sm opacity-90">Video Pembelajaran</div>
+                </a>
                 <div class="bg-bio-green text-white p-4 rounded-xl card-hover text-center cursor-pointer" onclick="openModal('materiAccessModal')">
                     <div class="text-2xl mb-2">📚</div>
                     <div class="font-semibold">Materi Terkini</div>
@@ -295,7 +316,7 @@
         <section id="video-belajar" class="mb-8">
             <h3 class="text-xl font-bold text-gray-800 mb-4">Video Belajar</h3>
             <div class="grid md:grid-cols-2 gap-6" id="videoContainer">
-                </div>
+            </div>
             <p class="text-sm text-center text-gray-500 mt-4">Konten dikelola oleh admin.</p>
         </section>
     </main>
@@ -317,8 +338,8 @@
 
         // Data yang disimpan di browser (akan hilang jika halaman direfresh)
         let videoList = JSON.parse(localStorage.getItem('videoList')) || [
-            { title: 'Dasar-dasar Genetika', url: 'https://www.youtube.com/embed/g2J0-Y6kR4Q' },
-            { title: 'Sistem Pencernaan Manusia', url: 'https://www.youtube.com/embed/8-P_z2aY_kQ' }
+            { title: 'Dasar-dasar Genetika', url: 'https://youtu.be/1m7ysiF5rI86' },
+            { title: 'Sistem Pencernaan Manusia', url: 'https://youtu.be/1m7ysiF5rI87' }
         ];
 
         let quizList = JSON.parse(localStorage.getItem('quizList')) || [
@@ -328,11 +349,13 @@
         ];
 
         let tkaList = JSON.parse(localStorage.getItem('tkaList')) || [
-            { title: 'TKA SOSHUM', url: 'https://drive.google.com/drive/folders/1TAaJSYsmP4K4cCmJgHDV8BPchut-nurl' }
+            { title: 'Info TKA', url: 'https://drive.google.com/drive/folders/17QXH71iaad5E-PlAPj7N9u4pHEHw7MCD?usp=drive_link' },
+            { title: 'Bank Soal TKA', url: 'https://drive.google.com/drive/folders/1AMfLzBCmbA_ulUi54XiBHLiXGSntscS3?usp=drive_link' },
+            { title: 'Simulasi TKA Kemendikdasmen', url: 'https://pusmendik.kemdikbud.go.id/tka/simulasi_tka' }
         ];
         
         let ptnList = JSON.parse(localStorage.getItem('ptnList')) || [
-            { title: 'Info PTN Terbaru', url: 'https://www.kompas.com/tag/informasi-ptn' }
+            { title: 'Info PTN Terbaru', url: 'https://snpmb.bppp.kemdikbud.go.id/' }
         ];
         
         let motivationQuote = localStorage.getItem('motivationQuote') || `"Ilmu Biologi adalah tentang kehidupan, begitu juga semangatmu."`;
@@ -419,7 +442,7 @@
                 videoContainer.appendChild(videoCard);
             });
         }
-        
+
         function renderAdminLists() {
             const renderList = (containerId, list, removeFn, storageKey) => {
                 const container = document.getElementById(containerId);
@@ -432,7 +455,7 @@
                             <h5 class="font-medium text-gray-800">${item.title}</h5>
                             <p class="text-sm text-gray-500 truncate w-64">${item.url}</p>
                         </div>
-                        <button onclick="removeLink(window.${containerId}, ${index}, window.${removeFn}, '${storageKey}')" class="text-red-500 hover:text-red-700 font-semibold text-sm">Hapus</button>
+                        <button onclick="removeLink(${containerId}, ${index}, ${removeFn}, '${storageKey}')" class="text-red-500 hover:text-red-700 font-semibold text-sm">Hapus</button>
                     `;
                     container.appendChild(itemDiv);
                 });
