@@ -122,7 +122,7 @@
     <div id="materiAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
             <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Pilih Kelas untuk Materi</h3>
+                <h3 class="text-xl font-bold">Pilih Materi</h3>
                 <button onclick="closeModal('materiAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
             </div>
             <div id="materiLinksContainer" class="space-y-4">
@@ -361,9 +361,9 @@
         let motivationQuote = localStorage.getItem('motivationQuote') || `"Ilmu Biologi adalah tentang kehidupan, begitu juga semangatmu."`;
 
         const materiList = [
-            { title: 'Kelas 10', url: 'https://drive.google.com/drive/folders/15ZHVdzLacpxH5UDkuQxBTc6NbM-Mu3QF?usp=drive_link' },
-            { title: 'Kelas 11', url: 'https://drive.google.com/drive/folders/1L4I5sKFT5oOp-9BSD8cGHxJ5tls-9wLi?usp=drive_link' },
-            { title: 'Kelas 12', url: 'https://drive.google.com/drive/folders/1Sfg9jMGDf0IFy8XgHIt-145ATjN9bBjG?usp=drive_link' }
+            { title: 'Ppt 10', url: 'https://drive.google.com/drive/folders/1HW5DaWmw2IQO5WKNskX8LB6SrU8YzTnD?usp=sharing' },
+            { title: 'Ppt 11', url: 'https://drive.google.com/drive/folders/1N2-TRlnWWNRmzrBrZubGPQ3275oUEqae?usp=drive_link' },
+            { title: 'Ppt 12', url: 'https://drive.google.com/drive/folders/1EL_31Vyki1I0EsuCW7_f6iS33lW0HtMN?usp=drive_link' }
         ];
 
         const videoList = [
@@ -472,7 +472,7 @@
                 linkDiv.href = item.url;
                 linkDiv.target = '_blank';
                 linkDiv.className = 'block w-full text-center p-4 border border-gray-200 rounded-lg hover:border-bio-green hover:bg-green-50 transition-colors font-semibold text-bio-green';
-                linkDiv.innerText = `Materi ${item.title}`;
+                linkDiv.innerText = `${item.title}`;
                 container.appendChild(linkDiv);
             });
         }
