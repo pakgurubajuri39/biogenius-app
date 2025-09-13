@@ -37,7 +37,7 @@
             transition: color 0.3s;
         }
         .admin-panel-link:hover {
-            color: #d1d5db; /* gray-300 */
+            color: #d1d5db;
         }
         .logo {
             width: 32px;
@@ -115,7 +115,52 @@
                         <button type="submit" class="mt-4 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">Tambah Info</button>
                     </form>
                 </div>
+
+                <div>
+                    <h4 class="font-semibold text-lg mb-2">Kelola Video Belajar</h4>
+                    <div id="videoList" class="space-y-4"></div>
+                    <form id="addVideoForm" class="mt-4">
+                        <div class="space-y-2">
+                            <input type="text" id="videoTitle" placeholder="Judul Video" class="w-full px-3 py-2 border rounded-lg" required>
+                            <input type="url" id="videoLink" placeholder="Link YouTube Embed" class="w-full px-3 py-2 border rounded-lg" required>
+                        </div>
+                        <button type="submit" class="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">Tambah Video</button>
+                    </form>
+                </div>
             </div>
+        </div>
+    </div>
+    
+    <div id="materiAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Pilih Kelas untuk Materi</h3>
+                <button onclick="closeModal('materiAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="materiLinksContainer" class="space-y-4">
+                </div>
+        </div>
+    </div>
+
+    <div id="quizAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Pilih Kelas untuk Quiz</h3>
+                <button onclick="closeModal('quizAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="quizLinksContainer" class="space-y-4">
+                </div>
+        </div>
+    </div>
+
+    <div id="tkaAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Pilih Simulasi TKA</h3>
+                <button onclick="closeModal('tkaAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="tkaLinksContainer" class="space-y-4">
+                </div>
         </div>
     </div>
 
@@ -188,7 +233,7 @@
         <section class="mb-8">
             <h3 class="text-xl font-bold text-gray-800 mb-4">Akses Cepat</h3>
             <div class="grid md:grid-cols-3 gap-4">
-                <div class="bg-bio-green text-white p-4 rounded-xl card-hover text-center">
+                <div class="bg-bio-green text-white p-4 rounded-xl card-hover text-center cursor-pointer" onclick="openModal('materiAccessModal')">
                     <div class="text-2xl mb-2">📚</div>
                     <div class="font-semibold">Materi Terkini</div>
                     <div class="text-sm opacity-90">Sesuai Kelasmu</div>
@@ -257,63 +302,49 @@
             <p class="text-sm text-center text-gray-500 mt-4">Konten dikelola oleh admin.</p>
         </section>
     </main>
-    
-    <div id="quizAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Pilih Kelas untuk Quiz</h3>
-                <button onclick="closeModal('quizAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
-            </div>
-            <div id="quizLinksContainer" class="space-y-4">
-                </div>
-        </div>
-    </div>
-
-    <div id="tkaAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Pilih Simulasi TKA</h3>
-                <button onclick="closeModal('tkaAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
-            </div>
-            <div id="tkaLinksContainer" class="space-y-4">
-                </div>
-        </div>
-    </div>
 
     <footer class="bg-bio-dark-gray text-white py-4 text-center text-sm">
         <p>
             © 2025 BioGenius. Hak Cipta Dilindungi.
             <button onclick="openLoginModal()" class="text-gray-400 hover:text-white transition-colors ml-4 admin-panel-link">Login Admin</button>
         </p>
+        <p class="mt-2 text-gray-400">Dibuat oleh: Pak Guru Luky</p>
     </footer>
 
     <script>
-        // Simulasi data dari server (Data akan hilang saat halaman di-refresh)
+        // Simulasi data dari server
         const adminCredentials = {
             username: 'bajuri39',
             password: 'b6723eaw'
         };
 
-        let videoList = [
-            { title: 'Dasar-dasar Genetika', url: 'https://www.youtube.com/embed/S2p5IuJzTqA' },
+        // Data yang disimpan di browser (akan hilang jika halaman direfresh)
+        let videoList = JSON.parse(localStorage.getItem('videoList')) || [
+            { title: 'Dasar-dasar Genetika', url: 'https://www.youtube.com/embed/SWMG0_39w9E' },
             { title: 'Sistem Pencernaan Manusia', url: 'https://www.youtube.com/embed/5' }
         ];
 
-        let quizList = [
+        let quizList = JSON.parse(localStorage.getItem('quizList')) || [
             { title: 'Kelas 10', url: 'https://forms.gle/4fF8eM9P4aJZCWrp9T' },
             { title: 'Kelas 11', url: 'https://forms.gle/5' },
             { title: 'Kelas 12', url: 'https://forms.gle/6' }
         ];
 
-        let tkaList = [
+        let tkaList = JSON.parse(localStorage.getItem('tkaList')) || [
             { title: 'TKA SOSHUM', url: 'https://drive.google.com/drive/folders/1TAaJSYsmP4K4cCmJgHDV8BPchut-nurl' }
         ];
         
-        let ptnList = [
+        let ptnList = JSON.parse(localStorage.getItem('ptnList')) || [
             { title: 'Info PTN Terbaru', url: 'https://www.kompas.com/tag/informasi-ptn' }
         ];
         
-        let motivationQuote = `"Ilmu Biologi adalah tentang kehidupan, begitu juga semangatmu."`;
+        let motivationQuote = localStorage.getItem('motivationQuote') || `"Ilmu Biologi adalah tentang kehidupan, begitu juga semangatmu."`;
+
+        const materiList = [
+            { title: 'Kelas 10', url: 'https://drive.google.com/drive/folders/1HW5DaWmw2IQO5WKNskX8LB6SrU8YzTnD?usp=sharing' },
+            { title: 'Kelas 11', url: 'https://drive.google.com/drive/folders/1N2-TRlnWWNRmzrBrZubGPQ3275oUEqae?usp=drive_link' },
+            { title: 'Kelas 12', url: 'https://drive.google.com/drive/folders/1EL_31Vyki1I0EsuCW7_f6iS33lW0HtMN?usp=drive_link' }
+        ];
 
         // Function untuk membuka dan menutup modal
         function openModal(modalId) {
@@ -326,7 +357,6 @@
             document.getElementById(modalId).classList.remove('flex');
         }
 
-        // Function untuk login admin
         function openLoginModal() {
             openModal('loginModal');
         }
@@ -353,21 +383,24 @@
         });
 
         // Add/Remove functions for different sections
-        function addLink(list, titleId, linkId, renderFn) {
+        function addLink(list, titleId, linkId, renderFn, storageKey) {
             const title = document.getElementById(titleId).value;
             const link = document.getElementById(linkId).value;
             if (title && link) {
                 list.push({ title: title, url: link });
+                localStorage.setItem(storageKey, JSON.stringify(list));
                 renderFn();
                 document.getElementById(titleId).value = '';
                 document.getElementById(linkId).value = '';
+                alert('Tautan berhasil ditambahkan!');
             } else {
                 alert('Judul dan link harus diisi!');
             }
         }
 
-        function removeLink(list, index, renderFn) {
+        function removeLink(list, index, renderFn, storageKey) {
             list.splice(index, 1);
+            localStorage.setItem(storageKey, JSON.stringify(list));
             renderFn();
         }
 
@@ -391,7 +424,7 @@
         }
         
         function renderAdminLists() {
-            const renderList = (containerId, list, removeFn) => {
+            const renderList = (containerId, list, removeFn, storageKey) => {
                 const container = document.getElementById(containerId);
                 container.innerHTML = '';
                 list.forEach((item, index) => {
@@ -402,27 +435,42 @@
                             <h5 class="font-medium text-gray-800">${item.title}</h5>
                             <p class="text-sm text-gray-500 truncate w-64">${item.url}</p>
                         </div>
-                        <button onclick="removeLink(${containerId}, ${index}, ${removeFn})" class="text-red-500 hover:text-red-700 font-semibold text-sm">Hapus</button>
+                        <button onclick="removeLink(${containerId}, ${index}, ${removeFn}, '${storageKey}')" class="text-red-500 hover:text-red-700 font-semibold text-sm">Hapus</button>
                     `;
                     container.appendChild(itemDiv);
                 });
             };
 
-            renderList('videoList', videoList, 'renderAdminLists');
-            renderList('quizList', quizList, 'renderAdminLists');
-            renderList('tkaList', tkaList, 'renderAdminLists');
-            renderList('ptnList', ptnList, 'renderAdminLists');
+            renderList('videoList', videoList, 'renderAdminLists', 'videoList');
+            renderList('quizList', quizList, 'renderAdminLists', 'quizList');
+            renderList('tkaList', tkaList, 'renderAdminLists', 'tkaList');
+            renderList('ptnList', ptnList, 'renderAdminLists', 'ptnList');
             
             // Set up form submissions
             document.getElementById('motivationForm').onsubmit = (e) => {
                 e.preventDefault();
                 motivationQuote = document.getElementById('motivationText').value;
+                localStorage.setItem('motivationQuote', motivationQuote);
                 document.getElementById('motivationQuote').innerText = motivationQuote;
                 alert('Kata motivasi berhasil diperbarui!');
             };
-            document.getElementById('addQuizForm').onsubmit = (e) => { e.preventDefault(); addLink(quizList, 'quizTitle', 'quizLink', renderAdminLists); renderQuizLinks(); };
-            document.getElementById('addTKAForm').onsubmit = (e) => { e.preventDefault(); addLink(tkaList, 'tkaTitle', 'tkaLink', renderAdminLists); renderTKALinks(); };
-            document.getElementById('addPTNForm').onsubmit = (e) => { e.preventDefault(); addLink(ptnList, 'ptnTitle', 'ptnLink', renderAdminLists); renderPTNLinks(); };
+            document.getElementById('addQuizForm').onsubmit = (e) => { e.preventDefault(); addLink(quizList, 'quizTitle', 'quizLink', renderAdminLists, 'quizList'); renderQuizLinks(); };
+            document.getElementById('addTKAForm').onsubmit = (e) => { e.preventDefault(); addLink(tkaList, 'tkaTitle', 'tkaLink', renderAdminLists, 'tkaList'); renderTKALinks(); };
+            document.getElementById('addPTNForm').onsubmit = (e) => { e.preventDefault(); addLink(ptnList, 'ptnTitle', 'ptnLink', renderAdminLists, 'ptnList'); renderPTNLinks(); };
+            document.getElementById('addVideoForm').onsubmit = (e) => { e.preventDefault(); addLink(videoList, 'videoTitle', 'videoLink', renderAdminLists, 'videoList'); renderVideoSection(); };
+        }
+        
+        function renderMateriLinks() {
+            const container = document.getElementById('materiLinksContainer');
+            container.innerHTML = '';
+            materiList.forEach(item => {
+                const linkDiv = document.createElement('a');
+                linkDiv.href = item.url;
+                linkDiv.target = '_blank';
+                linkDiv.className = 'block w-full text-center p-4 border border-gray-200 rounded-lg hover:border-bio-green hover:bg-green-50 transition-colors font-semibold text-bio-green';
+                linkDiv.innerText = `Materi ${item.title}`;
+                container.appendChild(linkDiv);
+            });
         }
 
         function renderQuizLinks() {
@@ -433,7 +481,7 @@
                 linkDiv.href = item.url;
                 linkDiv.target = '_blank';
                 linkDiv.className = 'block w-full text-center p-4 border border-gray-200 rounded-lg hover:border-bio-blue hover:bg-blue-50 transition-colors font-semibold text-bio-blue';
-                linkDiv.innerText = item.title;
+                linkDiv.innerText = `Quiz ${item.title}`;
                 container.appendChild(linkDiv);
             });
         }
@@ -463,14 +511,19 @@
                 container.appendChild(linkDiv);
             });
         }
-
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', () => {
+        
+        function initializeAll() {
             renderVideoSection();
+            renderMateriLinks();
             renderQuizLinks();
             renderTKALinks();
             renderPTNLinks();
             document.getElementById('motivationQuote').innerText = motivationQuote;
+        }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeAll();
         });
     </script>
 </body>
