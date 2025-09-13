@@ -115,6 +115,18 @@
                         <button type="submit" class="mt-4 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">Tambah Info</button>
                     </form>
                 </div>
+
+                <div>
+                    <h4 class="font-semibold text-lg mb-2">Kelola Video Belajar</h4>
+                    <div id="videoList" class="space-y-4"></div>
+                    <form id="addVideoForm" class="mt-4">
+                        <div class="space-y-2">
+                            <input type="text" id="videoTitle" placeholder="Judul Video" class="w-full px-3 py-2 border rounded-lg" required>
+                            <input type="url" id="videoLink" placeholder="Link YouTube Embed" class="w-full px-3 py-2 border rounded-lg" required>
+                        </div>
+                        <button type="submit" class="mt-4 bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition-colors">Tambah Video</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -152,6 +164,17 @@
         </div>
     </div>
 
+    <div id="videoAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Pilih Video Belajar</h3>
+                <button onclick="closeModal('videoAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="videoLinksContainer" class="space-y-4">
+            </div>
+        </div>
+    </div>
+
     <header class="gradient-bg text-white shadow-lg">
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
@@ -164,6 +187,7 @@
                 <nav class="hidden md:flex space-x-6">
                     <a href="#dashboard" class="hover:text-bio-light transition-colors">Dashboard</a>
                     <a href="#materi" class="hover:text-bio-light transition-colors">Materi</a>
+                    <a href="#video-belajar" class="hover:text-bio-light transition-colors">Video Belajar</a>
                 </nav>
                 <div class="flex items-center space-x-4">
                     <img src="https://i.ibb.co/L6V2y6L/PAK-AI.jpg" alt="Logo Pak Guru AI" class="logo">
@@ -225,6 +249,11 @@
         <section class="mb-8">
             <h3 class="text-xl font-bold text-gray-800 mb-4">Akses Cepat</h3>
             <div class="grid md:grid-cols-4 gap-4">
+                <div class="bg-red-500 text-white p-4 rounded-xl card-hover text-center cursor-pointer" onclick="openModal('videoAccessModal')">
+                    <div class="text-2xl mb-2">▶️</div>
+                    <div class="font-semibold">Video Belajar</div>
+                    <div class="text-sm opacity-90">Video Pembelajaran</div>
+                </div>
                 <div class="bg-bio-green text-white p-4 rounded-xl card-hover text-center cursor-pointer" onclick="openModal('materiAccessModal')">
                     <div class="text-2xl mb-2">📚</div>
                     <div class="font-semibold">Materi Terkini</div>
@@ -283,6 +312,13 @@
                 </div>
             </div>
         </section>
+
+        <section id="video-belajar" class="mb-8">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Video Belajar</h3>
+            <div class="grid md:grid-cols-2 gap-6" id="videoContainer">
+            </div>
+            <p class="text-sm text-center text-gray-500 mt-4">Konten dikelola oleh admin.</p>
+        </section>
     </main>
 
     <footer class="bg-bio-dark-gray text-white py-4 text-center text-sm">
@@ -301,6 +337,10 @@
         };
 
         // Data yang disimpan di browser (akan hilang jika halaman direfresh)
+        let videoList = JSON.parse(localStorage.getItem('videoList')) || [
+            { title: 'Video Belajar Biologi', url: 'https://drive.google.com/file/d/1wAQbkMtNznHleicdh1_axS8FjthMRFlJ/view?usp=drive_link' }
+        ];
+
         let quizList = JSON.parse(localStorage.getItem('quizList')) || [
             { title: 'Kelas 10', url: 'https://forms.gle/4fF8eM9P4aJZCWrp9T' },
             { title: 'Kelas 11', url: 'https://forms.gle/5' },
@@ -339,6 +379,7 @@
         }
 
         function openAdminPanel() {
+            renderVideoSection();
             renderAdminLists();
             openModal('adminPanelModal');
         }
@@ -381,6 +422,26 @@
         }
 
         // Render Functions
+        function renderVideoSection() {
+            const videoContainer = document.getElementById('videoContainer');
+            videoContainer.innerHTML = '';
+            videoList.forEach(video => {
+                const videoCard = document.createElement('div');
+                videoCard.className = 'bg-white rounded-xl shadow-lg overflow-hidden card-hover';
+                videoCard.innerHTML = `
+                    <a href="${video.url}" target="_blank" class="block">
+                        <div class="h-32 bg-red-500 flex items-center justify-center">
+                            <span class="text-4xl text-white">▶️</span>
+                        </div>
+                        <div class="p-4">
+                            <h4 class="font-semibold text-gray-800">${video.title}</h4>
+                        </div>
+                    </a>
+                `;
+                videoContainer.appendChild(videoCard);
+            });
+        }
+        
         function renderAdminLists() {
             const renderList = (containerId, list, removeFn, storageKey) => {
                 const container = document.getElementById(containerId);
@@ -399,6 +460,7 @@
                 });
             };
 
+            renderList('videoList', videoList, 'renderAdminLists', 'videoList');
             renderList('quizList', quizList, 'renderAdminLists', 'quizList');
             renderList('tkaList', tkaList, 'renderAdminLists', 'tkaList');
             renderList('ptnList', ptnList, 'renderAdminLists', 'ptnList');
@@ -411,6 +473,7 @@
                 document.getElementById('motivationQuote').innerText = motivationQuote;
                 alert('Kata motivasi berhasil diperbarui!');
             };
+            document.getElementById('addVideoForm').onsubmit = (e) => { e.preventDefault(); addLink(videoList, 'videoTitle', 'videoLink', renderAdminLists, 'videoList'); renderVideoSection(); };
             document.getElementById('addQuizForm').onsubmit = (e) => { e.preventDefault(); addLink(quizList, 'quizTitle', 'quizLink', renderAdminLists, 'quizList'); renderQuizLinks(); };
             document.getElementById('addTKAForm').onsubmit = (e) => { e.preventDefault(); addLink(tkaList, 'tkaTitle', 'tkaLink', renderAdminLists, 'tkaList'); renderTKALinks(); };
             document.getElementById('addPTNForm').onsubmit = (e) => { e.preventDefault(); addLink(ptnList, 'ptnTitle', 'ptnLink', renderAdminLists, 'ptnList'); renderPTNLinks(); };
@@ -468,11 +531,26 @@
             });
         }
         
+        function renderVideoLinks() {
+            const container = document.getElementById('videoLinksContainer');
+            container.innerHTML = '';
+            videoList.forEach(item => {
+                const linkDiv = document.createElement('a');
+                linkDiv.href = item.url;
+                linkDiv.target = '_blank';
+                linkDiv.className = 'block w-full text-center p-4 border border-gray-200 rounded-lg hover:border-red-500 hover:bg-red-50 transition-colors font-semibold text-red-600';
+                linkDiv.innerText = `Video ${item.title}`;
+                container.appendChild(linkDiv);
+            });
+        }
+
         function initializeAll() {
+            renderVideoSection();
             renderMateriLinks();
             renderQuizLinks();
             renderTKALinks();
             renderPTNLinks();
+            renderVideoLinks();
             document.getElementById('motivationQuote').innerText = motivationQuote;
         }
 
