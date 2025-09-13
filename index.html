@@ -33,18 +33,17 @@
         .progress-bar {
             background: linear-gradient(90deg, #10B981 0%, #3B82F6 100%);
         }
-        .notification-dot {
-            animation: pulse 2s infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
         .admin-panel-link {
             transition: color 0.3s;
         }
         .admin-panel-link:hover {
             color: #d1d5db; /* gray-300 */
+        }
+        .logo {
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+            border-radius: 9999px;
         }
     </style>
 </head>
@@ -67,22 +66,53 @@
     </div>
 
     <div id="adminPanelModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-3xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
                 <h3 class="text-xl font-bold">Panel Admin</h3>
                 <button onclick="closeModal('adminPanelModal')" class="text-gray-500 hover:text-gray-700">✕</button>
             </div>
             <div class="space-y-6">
                 <div>
-                    <h4 class="font-semibold text-lg mb-2">Kelola Video Belajar</h4>
-                    <div id="videoList" class="space-y-4">
-                        </div>
-                    <form id="addVideoForm" class="mt-4">
+                    <h4 class="font-semibold text-lg mb-2">Kelola Kata Motivasi</h4>
+                    <form id="motivationForm">
+                        <input type="text" id="motivationText" placeholder="Masukkan kata motivasi baru" class="w-full px-3 py-2 border rounded-lg" required>
+                        <button type="submit" class="mt-4 bg-bio-green text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">Simpan</button>
+                    </form>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold text-lg mb-2">Kelola Quiz</h4>
+                    <div id="quizList" class="space-y-4"></div>
+                    <form id="addQuizForm" class="mt-4">
                         <div class="space-y-2">
-                            <input type="text" id="videoTitle" placeholder="Judul Video" class="w-full px-3 py-2 border rounded-lg" required>
-                            <input type="url" id="videoLink" placeholder="Link YouTube (e.g., https://youtu.be/abcde123)" class="w-full px-3 py-2 border rounded-lg" required>
+                            <input type="text" id="quizTitle" placeholder="Judul Quiz (misal: Kelas 10)" class="w-full px-3 py-2 border rounded-lg" required>
+                            <input type="url" id="quizLink" placeholder="Link Google Drive/Form Quiz" class="w-full px-3 py-2 border rounded-lg" required>
                         </div>
-                        <button type="submit" class="mt-4 bg-bio-green text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">Tambah Video</button>
+                        <button type="submit" class="mt-4 bg-bio-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">Tambah Quiz</button>
+                    </form>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold text-lg mb-2">Kelola Simulasi TKA</h4>
+                    <div id="tkaList" class="space-y-4"></div>
+                    <form id="addTKAForm" class="mt-4">
+                        <div class="space-y-2">
+                            <input type="text" id="tkaTitle" placeholder="Judul Simulasi TKA" class="w-full px-3 py-2 border rounded-lg" required>
+                            <input type="url" id="tkaLink" placeholder="Link Google Drive Simulasi" class="w-full px-3 py-2 border rounded-lg" required>
+                        </div>
+                        <button type="submit" class="mt-4 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors">Tambah Simulasi</button>
+                    </form>
+                </div>
+
+                <div>
+                    <h4 class="font-semibold text-lg mb-2">Kelola Info PTN</h4>
+                    <div id="ptnList" class="space-y-4"></div>
+                    <form id="addPTNForm" class="mt-4">
+                        <div class="space-y-2">
+                            <input type="text" id="ptnTitle" placeholder="Judul Info PTN (misal: UI, ITB)" class="w-full px-3 py-2 border rounded-lg" required>
+                            <input type="url" id="ptnLink" placeholder="Link Artikel/Video Info PTN" class="w-full px-3 py-2 border rounded-lg" required>
+                        </div>
+                        <button type="submit" class="mt-4 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">Tambah Info</button>
                     </form>
                 </div>
             </div>
@@ -104,13 +134,7 @@
                     <a href="#video-belajar" class="hover:text-bio-light transition-colors">Video Belajar</a>
                 </nav>
                 <div class="flex items-center space-x-4">
-                    <div class="relative">
-                        <span class="text-xl cursor-pointer">🔔</span>
-                        <div class="notification-dot absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></div>
-                    </div>
-                    <div class="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                        <span id="userInitial" class="text-bio-green font-semibold">A</span>
-                    </div>
+                    <img src="https://i.ibb.co/L6V2y6L/PAK-AI.jpg" alt="Logo Pak Guru AI" class="logo">
                 </div>
             </div>
         </div>
@@ -119,44 +143,44 @@
     <main class="container mx-auto px-4 py-8">
         <section id="dashboard" class="mb-8">
             <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Selamat Datang, <span id="userName">Andi</span>! 👋</h2>
-                <p class="text-gray-600">Mari lanjutkan perjalanan belajar Biologi Anda hari ini</p>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Selamat Datang, Guys! 👋</h2>
+                <p class="text-gray-600">Mari lanjutkan perjalanan belajar Biologi kalian hari ini</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-6 mb-8">
                 <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-gray-800">Progress Belajar</h3>
-                        <span class="text-2xl">📊</span>
+                        <h3 class="font-semibold text-gray-800">Materi Terakhir</h3>
+                        <span class="text-2xl">📚</span>
                     </div>
                     <div class="mb-2">
                         <div class="flex justify-between text-sm text-gray-600 mb-1">
-                            <span id="progressTopic">Sel dan Jaringan</span>
-                            <span id="progressPercentage">85%</span>
+                            <span id="progressTopic">Belum ada materi yang dilihat</span>
+                            <span id="progressPercentage">0%</span>
                         </div>
                         <div class="w-full bg-gray-200 rounded-full h-2">
-                            <div class="progress-bar h-2 rounded-full" id="progressBar" style="width: 85%"></div>
+                            <div class="progress-bar h-2 rounded-full" id="progressBar" style="width: 0%"></div>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-500"><span id="progressDone">3</span> dari <span id="progressTotal">12</span> bab selesai</p>
+                    <p class="text-sm text-gray-500"><span id="progressDone">0</span> dari <span id="progressTotal">0</span> bab selesai</p>
                 </div>
 
                 <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-gray-800">Skor Kuis Terakhir</h3>
-                        <span class="text-2xl">🏆</span>
+                        <h3 class="font-semibold text-gray-800">Kata Motivasi</h3>
+                        <span class="text-2xl">✨</span>
                     </div>
-                    <div id="lastQuizScore" class="text-3xl font-bold text-bio-green mb-2">92</div>
-                    <p id="lastQuizInfo" class="text-sm text-gray-500">Genetika - Sangat Baik!</p>
+                    <div id="motivationQuote" class="text-xl font-bold text-bio-green mb-2">"Ilmu Biologi adalah tentang kehidupan, begitu juga semangatmu."</div>
+                    <p class="text-sm text-gray-500">Ayo, semangat belajar!</p>
                 </div>
 
                 <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-gray-800">Streak Belajar</h3>
-                        <span class="text-2xl">🔥</span>
+                        <h3 class="font-semibold text-gray-800">Info PTN</h3>
+                        <span class="text-2xl">🎓</span>
                     </div>
-                    <div id="learningStreak" class="text-3xl font-bold text-orange-500 mb-2">7</div>
-                    <p class="text-sm text-gray-500">Hari berturut-turut</p>
+                    <div id="ptnInfoContainer" class="space-y-2">
+                        </div>
                 </div>
             </div>
         </section>
@@ -164,21 +188,21 @@
         <section class="mb-8">
             <h3 class="text-xl font-bold text-gray-800 mb-4">Akses Cepat</h3>
             <div class="grid md:grid-cols-3 gap-4">
-                <a href="https://drive.google.com/drive/folders/1MGfreJnlk70wDlutK3xLfopLEwzOD0yw?usp=drive_link" target="_blank" class="bg-bio-green text-white p-4 rounded-xl card-hover text-center block">
+                <div class="bg-bio-green text-white p-4 rounded-xl card-hover text-center">
                     <div class="text-2xl mb-2">📚</div>
                     <div class="font-semibold">Materi Terkini</div>
-                    <div class="text-sm opacity-90">Keanekaragaman Hayati</div>
-                </a>
-                <a href="https://drive.google.com/drive/folders/1l-pXPT9eAJTtVZh3O8MtjT4aJZCWrp9T?usp=sharing" target="_blank" class="bg-bio-blue text-white p-4 rounded-xl card-hover text-center block">
+                    <div class="text-sm opacity-90">Sesuai Kelasmu</div>
+                </div>
+                <div class="bg-bio-blue text-white p-4 rounded-xl card-hover text-center cursor-pointer" onclick="openModal('quizAccessModal')">
                     <div class="text-2xl mb-2">🧠</div>
-                    <div class="font-semibold">Kuis Harian</div>
-                    <div class="text-sm opacity-90">15 Soal</div>
-                </a>
-                <a href="https://drive.google.com/drive/folders/1TAaJSYsmP4K4cCmJgHDV8BPchut-nurl?usp=sharing" target="_blank" class="bg-purple-500 text-white p-4 rounded-xl card-hover text-center block">
+                    <div class="font-semibold">Quiz</div>
+                    <div class="text-sm opacity-90">Pilih Kelas</div>
+                </div>
+                <div class="bg-purple-500 text-white p-4 rounded-xl card-hover text-center cursor-pointer" onclick="openModal('tkaAccessModal')">
                     <div class="text-2xl mb-2">⏱️</div>
                     <div class="font-semibold">Simulasi TKA</div>
-                    <div class="text-sm opacity-90">90 Menit</div>
-                </a>
+                    <div class="text-sm opacity-90">Pilih Soal</div>
+                </div>
             </div>
         </section>
 
@@ -191,10 +215,9 @@
                     </div>
                     <div class="p-4">
                         <h4 class="font-semibold text-gray-800 mb-2">Kelas 10</h4>
-                        <p class="text-sm text-gray-600 mb-3">Keanekaragaman Hayati, Ekologi, dan Lingkungan</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">6 Bab</span>
-                            <a href="https://drive.google.com/drive/folders/1MGfreJnlk70wDlutK3xLfopLEwzOD0yw?usp=drive_link" target="_blank" class="text-bio-green font-semibold text-sm">Lihat Materi →</a>
+                            <span class="text-xs bg-green-100 text-green-800 px-2 py-1 rounded">Materi PPT</span>
+                            <a href="https://drive.google.com/drive/folders/1HW5DaWmw2IQO5WKNskX8LB6SrU8YzTnD?usp=sharing" target="_blank" class="text-bio-green font-semibold text-sm">Lihat Materi →</a>
                         </div>
                     </div>
                 </div>
@@ -205,10 +228,9 @@
                     </div>
                     <div class="p-4">
                         <h4 class="font-semibold text-gray-800 mb-2">Kelas 11</h4>
-                        <p class="text-sm text-gray-600 mb-3">Struktur Sel, Jaringan, dan Sistem Organ Manusia</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">8 Bab</span>
-                            <a href="https://drive.google.com/drive/folders/1MGfreJnlk70wDlutK3xLfopLEwzOD0yw?usp=drive_link" target="_blank" class="text-bio-blue font-semibold text-sm">Lihat Materi →</a>
+                            <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded">Materi PPT</span>
+                            <a href="https://drive.google.com/drive/folders/1N2-TRlnWWNRmzrBrZubGPQ3275oUEqae?usp=drive_link" target="_blank" class="text-bio-blue font-semibold text-sm">Lihat Materi →</a>
                         </div>
                     </div>
                 </div>
@@ -219,10 +241,9 @@
                     </div>
                     <div class="p-4">
                         <h4 class="font-semibold text-gray-800 mb-2">Kelas 12</h4>
-                        <p class="text-sm text-gray-600 mb-3">Genetika, Evolusi, dan Bioteknologi</p>
                         <div class="flex justify-between items-center">
-                            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">7 Bab</span>
-                            <a href="https://drive.google.com/drive/folders/1MGfreJnlk70wDlutK3xLfopLEwzOD0yw?usp=drive_link" target="_blank" class="text-purple-600 font-semibold text-sm">Lihat Materi →</a>
+                            <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">Materi PPT</span>
+                            <a href="https://drive.google.com/drive/folders/1EL_31Vyki1I0EsuCW7_f6iS33lW0HtMN?usp=drive_link" target="_blank" class="text-purple-600 font-semibold text-sm">Lihat Materi →</a>
                         </div>
                     </div>
                 </div>
@@ -236,6 +257,28 @@
             <p class="text-sm text-center text-gray-500 mt-4">Konten dikelola oleh admin.</p>
         </section>
     </main>
+    
+    <div id="quizAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Pilih Kelas untuk Quiz</h3>
+                <button onclick="closeModal('quizAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="quizLinksContainer" class="space-y-4">
+                </div>
+        </div>
+    </div>
+
+    <div id="tkaAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Pilih Simulasi TKA</h3>
+                <button onclick="closeModal('tkaAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="tkaLinksContainer" class="space-y-4">
+                </div>
+        </div>
+    </div>
 
     <footer class="bg-bio-dark-gray text-white py-4 text-center text-sm">
         <p>
@@ -245,49 +288,34 @@
     </footer>
 
     <script>
-        // Simulasi data dari server
-        const userData = {
-            name: 'Andi',
-            progress: {
-                topic: 'Keanekaragaman Hayati',
-                done: 4,
-                total: 8,
-                percentage: 50
-            },
-            lastQuiz: {
-                score: 85,
-                info: 'Ekologi - Cukup Baik'
-            },
-            streak: 10
-        };
-
+        // Simulasi data dari server (Data akan hilang saat halaman di-refresh)
         const adminCredentials = {
             username: 'bajuri39',
             password: 'b6723eaw'
         };
 
         let videoList = [
-            { title: 'Dasar-dasar Genetika', url: 'https://www.youtube.com/embed/j-j4dYd3w60' },
-            { title: 'Sistem Pencernaan Manusia', url: 'https://www.youtube.com/embed/yW-K9a04WqY' }
+            { title: 'Dasar-dasar Genetika', url: 'https://www.youtube.com/embed/S2p5IuJzTqA' },
+            { title: 'Sistem Pencernaan Manusia', url: 'https://www.youtube.com/embed/5' }
         ];
 
-        // Functions to update content
-        function updateDashboard() {
-            document.getElementById('userName').innerText = userData.name;
-            document.getElementById('userInitial').innerText = userData.name.charAt(0).toUpperCase();
+        let quizList = [
+            { title: 'Kelas 10', url: 'https://forms.gle/4fF8eM9P4aJZCWrp9T' },
+            { title: 'Kelas 11', url: 'https://forms.gle/5' },
+            { title: 'Kelas 12', url: 'https://forms.gle/6' }
+        ];
 
-            document.getElementById('progressTopic').innerText = userData.progress.topic;
-            document.getElementById('progressPercentage').innerText = userData.progress.percentage + '%';
-            document.getElementById('progressBar').style.width = userData.progress.percentage + '%';
-            document.getElementById('progressDone').innerText = userData.progress.done;
-            document.getElementById('progressTotal').innerText = userData.progress.total;
+        let tkaList = [
+            { title: 'TKA SOSHUM', url: 'https://drive.google.com/drive/folders/1TAaJSYsmP4K4cCmJgHDV8BPchut-nurl' }
+        ];
+        
+        let ptnList = [
+            { title: 'Info PTN Terbaru', url: 'https://www.kompas.com/tag/informasi-ptn' }
+        ];
+        
+        let motivationQuote = `"Ilmu Biologi adalah tentang kehidupan, begitu juga semangatmu."`;
 
-            document.getElementById('lastQuizScore').innerText = userData.lastQuiz.score;
-            document.getElementById('lastQuizInfo').innerText = userData.lastQuiz.info;
-            document.getElementById('learningStreak').innerText = userData.streak;
-        }
-
-        // Functions for Modals
+        // Function untuk membuka dan menutup modal
         function openModal(modalId) {
             document.getElementById(modalId).classList.remove('hidden');
             document.getElementById(modalId).classList.add('flex');
@@ -298,12 +326,14 @@
             document.getElementById(modalId).classList.remove('flex');
         }
 
+        // Function untuk login admin
         function openLoginModal() {
             openModal('loginModal');
         }
 
         function openAdminPanel() {
-            renderVideoList();
+            renderVideoSection();
+            renderAdminLists();
             openModal('adminPanelModal');
         }
 
@@ -312,7 +342,6 @@
             e.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-
             if (username === adminCredentials.username && password === adminCredentials.password) {
                 closeModal('loginModal');
                 openAdminPanel();
@@ -323,48 +352,26 @@
             document.getElementById('loginForm').reset();
         });
 
-        document.getElementById('addVideoForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const title = document.getElementById('videoTitle').value;
-            const link = document.getElementById('videoLink').value;
-
-            // Simple validation for YouTube link
-            if (link.includes('youtu.be') || link.includes('youtube.com')) {
-                const videoId = link.split('v=')[1] || link.split('youtu.be/')[1];
-                const embedUrl = `https://www.youtube.com/embed/${videoId.split('&')[0]}`;
-                videoList.push({ title: title, url: embedUrl });
-                renderVideoList();
-                renderVideoSection();
-                document.getElementById('addVideoForm').reset();
+        // Add/Remove functions for different sections
+        function addLink(list, titleId, linkId, renderFn) {
+            const title = document.getElementById(titleId).value;
+            const link = document.getElementById(linkId).value;
+            if (title && link) {
+                list.push({ title: title, url: link });
+                renderFn();
+                document.getElementById(titleId).value = '';
+                document.getElementById(linkId).value = '';
             } else {
-                alert('Tautan tidak valid. Mohon masukkan tautan YouTube yang benar.');
+                alert('Judul dan link harus diisi!');
             }
-        });
-
-        function removeVideo(index) {
-            videoList.splice(index, 1);
-            renderVideoList();
-            renderVideoSection();
-        }
-        
-        // Rendering Functions
-        function renderVideoList() {
-            const videoListDiv = document.getElementById('videoList');
-            videoListDiv.innerHTML = '';
-            videoList.forEach((video, index) => {
-                const videoItem = document.createElement('div');
-                videoItem.className = 'border-l-4 border-bio-green pl-4 py-2 flex justify-between items-center';
-                videoItem.innerHTML = `
-                    <div>
-                        <h5 class="font-medium text-gray-800">${video.title}</h5>
-                        <p class="text-sm text-gray-500">${video.url}</p>
-                    </div>
-                    <button onclick="removeVideo(${index})" class="text-red-500 hover:text-red-700 font-semibold text-sm">Hapus</button>
-                `;
-                videoListDiv.appendChild(videoItem);
-            });
         }
 
+        function removeLink(list, index, renderFn) {
+            list.splice(index, 1);
+            renderFn();
+        }
+
+        // Render Functions
         function renderVideoSection() {
             const videoContainer = document.getElementById('videoContainer');
             videoContainer.innerHTML = '';
@@ -382,11 +389,88 @@
                 videoContainer.appendChild(videoCard);
             });
         }
+        
+        function renderAdminLists() {
+            const renderList = (containerId, list, removeFn) => {
+                const container = document.getElementById(containerId);
+                container.innerHTML = '';
+                list.forEach((item, index) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'border-l-4 border-bio-green pl-4 py-2 flex justify-between items-center';
+                    itemDiv.innerHTML = `
+                        <div>
+                            <h5 class="font-medium text-gray-800">${item.title}</h5>
+                            <p class="text-sm text-gray-500 truncate w-64">${item.url}</p>
+                        </div>
+                        <button onclick="removeLink(${containerId}, ${index}, ${removeFn})" class="text-red-500 hover:text-red-700 font-semibold text-sm">Hapus</button>
+                    `;
+                    container.appendChild(itemDiv);
+                });
+            };
+
+            renderList('videoList', videoList, 'renderAdminLists');
+            renderList('quizList', quizList, 'renderAdminLists');
+            renderList('tkaList', tkaList, 'renderAdminLists');
+            renderList('ptnList', ptnList, 'renderAdminLists');
+            
+            // Set up form submissions
+            document.getElementById('motivationForm').onsubmit = (e) => {
+                e.preventDefault();
+                motivationQuote = document.getElementById('motivationText').value;
+                document.getElementById('motivationQuote').innerText = motivationQuote;
+                alert('Kata motivasi berhasil diperbarui!');
+            };
+            document.getElementById('addQuizForm').onsubmit = (e) => { e.preventDefault(); addLink(quizList, 'quizTitle', 'quizLink', renderAdminLists); renderQuizLinks(); };
+            document.getElementById('addTKAForm').onsubmit = (e) => { e.preventDefault(); addLink(tkaList, 'tkaTitle', 'tkaLink', renderAdminLists); renderTKALinks(); };
+            document.getElementById('addPTNForm').onsubmit = (e) => { e.preventDefault(); addLink(ptnList, 'ptnTitle', 'ptnLink', renderAdminLists); renderPTNLinks(); };
+        }
+
+        function renderQuizLinks() {
+            const container = document.getElementById('quizLinksContainer');
+            container.innerHTML = '';
+            quizList.forEach(item => {
+                const linkDiv = document.createElement('a');
+                linkDiv.href = item.url;
+                linkDiv.target = '_blank';
+                linkDiv.className = 'block w-full text-center p-4 border border-gray-200 rounded-lg hover:border-bio-blue hover:bg-blue-50 transition-colors font-semibold text-bio-blue';
+                linkDiv.innerText = item.title;
+                container.appendChild(linkDiv);
+            });
+        }
+
+        function renderTKALinks() {
+            const container = document.getElementById('tkaLinksContainer');
+            container.innerHTML = '';
+            tkaList.forEach(item => {
+                const linkDiv = document.createElement('a');
+                linkDiv.href = item.url;
+                linkDiv.target = '_blank';
+                linkDiv.className = 'block w-full text-center p-4 border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-colors font-semibold text-purple-600';
+                linkDiv.innerText = item.title;
+                container.appendChild(linkDiv);
+            });
+        }
+
+        function renderPTNLinks() {
+            const container = document.getElementById('ptnInfoContainer');
+            container.innerHTML = '';
+            ptnList.forEach(item => {
+                const linkDiv = document.createElement('a');
+                linkDiv.href = item.url;
+                linkDiv.target = '_blank';
+                linkDiv.className = 'block text-sm text-gray-700 underline hover:text-bio-blue';
+                linkDiv.innerText = `➤ ${item.title}`;
+                container.appendChild(linkDiv);
+            });
+        }
 
         // Initialize on page load
         document.addEventListener('DOMContentLoaded', () => {
-            updateDashboard();
             renderVideoSection();
+            renderQuizLinks();
+            renderTKALinks();
+            renderPTNLinks();
+            document.getElementById('motivationQuote').innerText = motivationQuote;
         });
     </script>
 </body>
