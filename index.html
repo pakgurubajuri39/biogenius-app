@@ -187,7 +187,7 @@
     <main class="container mx-auto px-4 py-8">
         <section id="dashboard" class="mb-8">
             <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Selamat Datang, Guys! 👋</h2>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Hi... Selamat Datang, Guys! 👋</h2>
                 <p class="text-gray-600">Mari lanjutkan perjalanan belajar Biologi kalian hari ini</p>
             </div>
 
@@ -217,12 +217,12 @@
 
                 <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-gray-800">Info PTN</h3>
+                        <h3 class="font-semibold text-gray-800">Info PERGURUAN TINGGI NEGERI (PTN)</h3>
                         <span class="text-2xl">🎓</span>
                     </div>
                     <div class="flex flex-col space-y-2">
                         <a href="https://snpmb.bppp.kemdikbud.go.id/" target="_blank" class="block text-sm text-gray-700 underline hover:text-bio-blue">
-                            ➤ Cek Info SNPMB
+                            ➤ Cek Info SNPMB disini!
                         </a>
                         <div id="ptnInfoContainer" class="space-y-2">
                             </div>
@@ -327,7 +327,7 @@
 
     <footer class="bg-bio-dark-gray text-white py-4 text-center text-sm">
         <p>
-            © 2025 BioGenius. Hak Cipta Dilindungi.
+            © 2025 BioGenius. Hak Cipta Dilindungi Undang-Undang.
             <button onclick="openLoginModal()" class="text-gray-400 hover:text-white transition-colors ml-4 admin-panel-link">Login Admin</button>
         </p>
         <p class="mt-2 text-gray-400">Dibuat oleh: Pak Guru Luky</p>
@@ -342,9 +342,9 @@
 
         // Data yang disimpan di browser (akan hilang jika halaman direfresh)
         let quizList = JSON.parse(localStorage.getItem('quizList')) || [
-            { title: 'LatSol 10', url: 'https://drive.google.com/drive/folders/1nGYrDh2nJ7Kp4ZQXszUp3uDXNS4MII8C?usp=drive_link' },
-            { title: 'LatSol 11', url: 'https://drive.google.com/drive/folders/1s6zRbItNHx8G7T0qOkmZADvQ7_ySnFi5?usp=drive_link' },
-            { title: 'LatSol 12', url: 'https://drive.google.com/drive/folders/17jXEqhpMlkGXiVdZrVoDRR0QvF8GSyvg?usp=drive_link' }
+            { title: 'Latihabn Soal 10', url: 'https://drive.google.com/drive/folders/1nGYrDh2nJ7Kp4ZQXszUp3uDXNS4MII8C?usp=drive_link' },
+            { title: 'Latihan Soal 11', url: 'https://drive.google.com/drive/folders/1s6zRbItNHx8G7T0qOkmZADvQ7_ySnFi5?usp=drive_link' },
+            { title: 'Latihan Soal 12', url: 'https://drive.google.com/drive/folders/17jXEqhpMlkGXiVdZrVoDRR0QvF8GSyvg?usp=drive_link' }
         ];
 
         let tkaList = JSON.parse(localStorage.getItem('tkaList')) || [
@@ -358,9 +358,9 @@
         let motivationQuote = localStorage.getItem('motivationQuote') || `"Ilmu Biologi adalah tentang kehidupan, begitu juga semangatmu."`;
 
         const materiList = [
-            { title: 'Ppt 10', url: 'https://drive.google.com/drive/folders/1HW5DaWmw2IQO5WKNskX8LB6SrU8YzTnD?usp=sharing' },
-            { title: 'Ppt 11', url: 'https://drive.google.com/drive/folders/1N2-TRlnWWNRmzrBrZubGPQ3275oUEqae?usp=drive_link' },
-            { title: 'Ppt 12', url: 'https://drive.google.com/drive/folders/1EL_31Vyki1I0EsuCW7_f6iS33lW0HtMN?usp=drive_link' }
+            { title: 'PPT 10', url: 'https://drive.google.com/drive/folders/1HW5DaWmw2IQO5WKNskX8LB6SrU8YzTnD?usp=sharing' },
+            { title: 'PPT 11', url: 'https://drive.google.com/drive/folders/1N2-TRlnWWNRmzrBrZubGPQ3275oUEqae?usp=drive_link' },
+            { title: 'PPT 12', url: 'https://drive.google.com/drive/folders/1EL_31Vyki1I0EsuCW7_f6iS33lW0HtMN?usp=drive_link' }
         ];
 
         const videoList = [
