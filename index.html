@@ -1,544 +1,547 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BioGenius - Platform Pembelajaran Biologi SMA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'bio-green': '#10B981',
-                        'bio-blue': '#3B82F6',
-                        'bio-light': '#F0FDF4',
-                        'bio-dark-gray': '#4B5563'
-                    }
-                }
-            }
-        }
-    </script>
-    <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #10B981 0%, #3B82F6 100%);
-        }
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-        .progress-bar {
-            background: linear-gradient(90deg, #10B981 0%, #3B82F6 100%);
-        }
-        .admin-panel-link {
-            transition: color 0.3s;
-        }
-        .admin-panel-link:hover {
-            color: #d1d5db;
-        }
-        .logo {
-            width: 32px;
-            height: 32px;
-            object-fit: cover;
-            border-radius: 9999px;
-        }
-    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioGenius - Platform Pembelajaran Biologi SMA</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'bio-green': '#10B981',
+                        'bio-blue': '#3B82F6',
+                        'bio-light': '#F0FDF4',
+                        'bio-dark-gray': '#4B5563'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #10B981 0%, #3B82F6 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+        .progress-bar {
+            background: linear-gradient(90deg, #10B981 0%, #3B82F6 100%);
+        }
+        .admin-panel-link {
+            transition: color 0.3s;
+        }
+        .admin-panel-link:hover {
+            color: #d1d5db;
+        }
+        .logo {
+            width: 32px;
+            height: 32px;
+            object-fit: cover;
+            border-radius: 9999px;
+        }
+    </style>
 </head>
 <body class="bg-gray-50 font-sans">
-    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-8 m-4 w-full max-w-sm shadow-xl">
-            <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Login Admin</h3>
-            <form id="loginForm">
-                <div class="mb-4">
-                    <label for="username" class="block text-gray-700 font-semibold mb-2">Username</label>
-                    <input type="text" id="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-bio-blue" required>
-                </div>
-                <div class="mb-6">
-                    <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
-                    <input type="password" id="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-bio-blue" required>
-                </div>
-                <button type="submit" class="w-full bg-bio-blue text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors">Login</button>
-            </form>
-        </div>
-    </div>
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 m-4 w-full max-w-sm shadow-xl">
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Login Admin</h3>
+            <form id="loginForm">
+                <div class="mb-4">
+                    <label for="username" class="block text-gray-700 font-semibold mb-2">Username</label>
+                    <input type="text" id="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-bio-blue" required>
+                </div>
+                <div class="mb-6">
+                    <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
+                    <input type="password" id="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-bio-blue" required>
+                </div>
+                <button type="submit" class="w-full bg-bio-blue text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors">Login</button>
+            </form>
+        </div>
+    </div>
 
-    <div id="adminPanelModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-3xl max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Panel Admin</h3>
-                <button onclick="closeModal('adminPanelModal')" class="text-gray-500 hover:text-gray-700">✕</button>
-            </div>
-            <div class="space-y-6">
-                <div>
-                    <h4 class="font-semibold text-lg mb-2">Kelola Kata Motivasi</h4>
-                    <form id="motivationForm">
-                        <input type="text" id="motivationText" placeholder="Masukkan kata motivasi baru" class="w-full px-3 py-2 border rounded-lg" required>
-                        <button type="submit" class="mt-4 bg-bio-green text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">Simpan</button>
-                    </form>
-                </div>
+    <div id="adminPanelModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-3xl max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Panel Admin</h3>
+                <button onclick="closeModal('adminPanelModal')" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div class="space-y-6">
+                <div>
+                    <h4 class="font-semibold text-lg mb-2">Kelola Kata Motivasi</h4>
+                    <form id="motivationForm">
+                        <input type="text" id="motivationText" placeholder="Masukkan kata motivasi baru" class="w-full px-3 py-2 border rounded-lg" required>
+                        <button type="submit" class="mt-4 bg-bio-green text-white px-4 py-2 rounded-lg hover:bg-green-600 transition-colors">Simpan</button>
+                    </form>
+                </div>
 
-                <div>
-                    <h4 class="font-semibold text-lg mb-2">Kelola Latihan Soal</h4>
-                    <div id="quizList" class="space-y-4"></div>
-                    <form id="addQuizForm" class="mt-4">
-                        <div class="space-y-2">
-                            <input type="text" id="quizTitle" placeholder="Judul Latihan Soal (misal: LatSol 10)" class="w-full px-3 py-2 border rounded-lg" required>
-                            <input type="url" id="quizLink" placeholder="Link Google Drive Latihan Soal" class="w-full px-3 py-2 border rounded-lg" required>
-                        </div>
-                        <button type="submit" class="mt-4 bg-bio-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">Tambah Latihan Soal</button>
-                    </form>
-                </div>
+                <div>
+                    <h4 class="font-semibold text-lg mb-2">Kelola Latihan Soal</h4>
+                    <div id="quizList" class="space-y-4"></div>
+                    <form id="addQuizForm" class="mt-4">
+                        <div class="space-y-2">
+                            <input type="text" id="quizTitle" placeholder="Judul Latihan Soal (misal: LatSol 10)" class="w-full px-3 py-2 border rounded-lg" required>
+                            <input type="url" id="quizLink" placeholder="Link Google Drive Latihan Soal" class="w-full px-3 py-2 border rounded-lg" required>
+                        </div>
+                        <button type="submit" class="mt-4 bg-bio-blue text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">Tambah Latihan Soal</button>
+                    </form>
+                </div>
 
-                <div>
-                    <h4 class="font-semibold text-lg mb-2">Kelola Simulasi TKA</h4>
-                    <div id="tkaList" class="space-y-4"></div>
-                    <form id="addTKAForm" class="mt-4">
-                        <div class="space-y-2">
-                            <input type="text" id="tkaTitle" placeholder="Judul Simulasi TKA" class="w-full px-3 py-2 border rounded-lg" required>
-                            <input type="url" id="tkaLink" placeholder="Link Google Drive Simulasi" class="w-full px-3 py-2 border rounded-lg" required>
-                        </div>
-                        <button type="submit" class="mt-4 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors">Tambah Simulasi</button>
-                    </form>
-                </div>
+                <div>
+                    <h4 class="font-semibold text-lg mb-2">Kelola Simulasi TKA</h4>
+                    <div id="tkaList" class="space-y-4"></div>
+                    <form id="addTKAForm" class="mt-4">
+                        <div class="space-y-2">
+                            <input type="text" id="tkaTitle" placeholder="Judul Simulasi TKA" class="w-full px-3 py-2 border rounded-lg" required>
+                            <input type="url" id="tkaLink" placeholder="Link Google Drive Simulasi" class="w-full px-3 py-2 border rounded-lg" required>
+                        </div>
+                        <button type="submit" class="mt-4 bg-purple-500 text-white px-4 py-2 rounded-lg hover:bg-purple-600 transition-colors">Tambah Simulasi</button>
+                    </form>
+                </div>
 
-                <div>
-                    <h4 class="font-semibold text-lg mb-2">Kelola Info PTN</h4>
-                    <div id="ptnList" class="space-y-4"></div>
-                    <form id="addPTNForm" class="mt-4">
-                        <div class="space-y-2">
-                            <input type="text" id="ptnTitle" placeholder="Judul Info PTN (misal: UI, ITB)" class="w-full px-3 py-2 border rounded-lg" required>
-                            <input type="url" id="ptnLink" placeholder="Link Artikel/Video Info PTN" class="w-full px-3 py-2 border rounded-lg" required>
-                        </div>
-                        <button type="submit" class="mt-4 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">Tambah Info</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+                <div>
+                    <h4 class="font-semibold text-lg mb-2">Kelola Info PTN</h4>
+                    <div id="ptnList" class="space-y-4"></div>
+                    <form id="addPTNForm" class="mt-4">
+                        <div class="space-y-2">
+                            <input type="text" id="ptnTitle" placeholder="Judul Info PTN (misal: UI, ITB)" class="w-full px-3 py-2 border rounded-lg" required>
+                            <input type="url" id="ptnLink" placeholder="Link Artikel/Video Info PTN" class="w-full px-3 py-2 border rounded-lg" required>
+                        </div>
+                        <button type="submit" class="mt-4 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors">Tambah Info</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <div id="materiAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Pilih Materi</h3>
-                <button onclick="closeModal('materiAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
-            </div>
-            <div id="materiLinksContainer" class="space-y-4">
-            </div>
-        </div>
-    </div>
+    <div id="materiAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Pilih Materi</h3>
+                <button onclick="closeModal('materiAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="materiLinksContainer" class="space-y-4">
+            </div>
+        </div>
+    </div>
 
-    <div id="quizAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Pilih Latihan Soal</h3>
-                <button onclick="closeModal('quizAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
-            </div>
-            <div id="quizLinksContainer" class="space-y-4">
-            </div>
-        </div>
-    </div>
+    <div id="quizAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Pilih Latihan Soal</h3>
+                <button onclick="closeModal('quizAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="quizLinksContainer" class="space-y-4">
+            </div>
+        </div>
+    </div>
 
-    <div id="tkaAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Pilih Simulasi TKA</h3>
-                <button onclick="closeModal('tkaAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
-            </div>
-            <div id="tkaLinksContainer" class="space-y-4">
-            </div>
-        </div>
-    </div>
+    <div id="tkaAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Pilih Simulasi TKA</h3>
+                <button onclick="closeModal('tkaAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="tkaLinksContainer" class="space-y-4">
+            </div>
+        </div>
+    </div>
 
-    <div id="videoAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="text-xl font-bold">Pilih Video Belajar</h3>
-                <button onclick="closeModal('videoAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
-            </div>
-            <div id="videoLinksContainer" class="space-y-4">
-            </div>
-        </div>
-    </div>
+    <div id="videoAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-bold">Pilih Video Belajar</h3>
+                <button onclick="closeModal('videoAccessModal')" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <div id="videoLinksContainer" class="space-y-4">
+            </div>
+        </div>
+    </div>
 
-    <header class="gradient-bg text-white shadow-lg">
-        <div class="container mx-auto px-4 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                        <span class="text-bio-green font-bold text-xl">🧬</span>
-                    </div>
-                    <h1 class="text-2xl font-bold">BioGenius</h1>
-                </div>
-                <nav class="hidden md:flex space-x-6">
-                    <a href="#dashboard" class="hover:text-bio-light transition-colors">Dashboard</a>
-                    <a href="#materi" class="hover:text-bio-light transition-colors">Materi</a>
-                    <a href="#video-belajar" class="hover:text-bio-light transition-colors">Video Belajar</a>
-                </nav>
-                <div class="flex items-center space-x-4">
-                    <img src="https://i.ibb.co/L6V2y6L/PAK-AI.jpg" alt="Logo Pak Guru AI" class="logo">
-                </div>
-            </div>
-        </div>
-    </header>
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                        <span class="text-bio-green font-bold text-xl">🧬</span>
+                    </div>
+                    <h1 class="text-2xl font-bold">BioGenius</h1>
+                </div>
+                <nav class="hidden md:flex space-x-6">
+                    <a href="#dashboard" class="hover:text-bio-light transition-colors">Dashboard</a>
+                    <a href="#materi" class="hover:text-bio-light transition-colors">Materi</a>
+                    <a href="#video-belajar" class="hover:text-bio-light transition-colors">Video Belajar</a>
+                </nav>
+                <div class="flex items-center space-x-4">
+                    <img src="https://i.ibb.co/L6V2y6L/PAK-AI.jpg" alt="Logo Pak Guru AI" class="logo">
+                </div>
+            </div>
+        </div>
+    </header>
 
-    <main class="container mx-auto px-4 py-8">
-        <section id="dashboard" class="mb-8">
-            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Selamat Datang, Guys! 👋</h2>
-                <p class="text-gray-600">Mari lanjutkan perjalanan belajar Biologi kalian hari ini</p>
-            </div>
+    <main class="container mx-auto px-4 py-8">
+        <section id="dashboard" class="mb-8">
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Selamat Datang, Guys! 👋</h2>
+                <p class="text-gray-600">Mari lanjutkan perjalanan belajar Biologi kalian hari ini</p>
+            </div>
 
-            <div class="grid md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white rounded-xl shadow-lg p-6 card-hover cursor-pointer" onclick="window.open('https://huggingface.co/spaces/pakguru/Gurunya.Ai', '_blank');">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-gray-800">Tanya Pak Guru AI</h3>
-                        <span class="text-2xl">🤖</span>
-                    </div>
-                    <div class="mb-2">
-                        <p class="text-sm text-gray-600">Tanyakan pertanyaan Biologi Anda dan dapatkan jawaban instan.</p>
-                    </div>
-                    <div class="flex justify-between items-center mt-4">
-                        <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">Interaktif</span>
-                        <span class="text-bio-blue font-semibold text-sm">Mulai →</span>
-                    </div>
-                </div>
+            <div class="grid md:grid-cols-3 gap-6 mb-8">
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover cursor-pointer" onclick="window.open('https://huggingface.co/spaces/pakguru/Gurunya.Ai', '_blank');">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-semibold text-gray-800">Tanya Pak Guru AI</h3>
+                        <span class="text-2xl">🤖</span>
+                    </div>
+                    <div class="mb-2">
+                        <p class="text-sm text-gray-600">Tanyakan pertanyaan Biologi Anda dan dapatkan jawaban instan.</p>
+                    </div>
+                    <div class="flex justify-between items-center mt-4">
+                        <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">Interaktif</span>
+                        <span class="text-bio-blue font-semibold text-sm">Mulai →</span>
+                    </div>
+                </div>
 
-                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-gray-800">Kata Motivasi</h3>
-                        <span class="text-2xl">✨</span>
-                    </div>
-                    <div id="motivationQuote" class="text-xl font-bold text-bio-green mb-2">"Ilmu Biologi adalah tentang kehidupan, begitu juga semangatmu."</div>
-                    <p class="text-sm text-gray-500">Ayo, semangat belajar!</p>
-                </div>
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-semibold text-gray-800">Kata Motivasi</h3>
+                        <span class="text-2xl">✨</span>
+                    </div>
+                    <div id="motivationQuote" class="text-xl font-bold text-bio-green mb-2">"Ilmu Biologi adalah tentang kehidupan, begitu juga semangatmu."</div>
+                    <p class="text-sm text-gray-500">Ayo, semangat belajar!</p>
+                </div>
 
-                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-gray-800">Info PERGURUAN TINGGI NEGERI (PTN)</h3>
-                        <span class="text-2xl">🎓</span>
-                    </div>
-                    <div class="flex flex-col space-y-2">
-                        <a href="https://snpmb.bppp.kemdikbud.go.id/" target="_blank" class="block text-sm text-gray-700 underline hover:text-bio-blue">
-                            ➤ Cek Info SNPMB disini!
-                        </a>
-                        <div id="ptnInfoContainer" class="space-y-2">
-                            </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="font-semibold text-gray-800">Info PERGURUAN TINGGI NEGERI (PTN)</h3>
+                        <span class="text-2xl">🎓</span>
+                    </div>
+                    <div class="flex flex-col space-y-2">
+                        <a href="https://snpmb.bppp.kemdikbud.go.id/" target="_blank" class="block text-sm text-gray-700 underline hover:text-bio-blue">
+                            ➤ Cek Info SNPMB disini!
+                        </a>
+                        <a href="https://huggingface.co/spaces/pakguru/Informasi_PTN" target="_blank" class="block text-sm text-gray-700 underline hover:text-bio-blue">
+                            ➤ Informasi PTN Indonesia
+                        </a>
+                        <div id="ptnInfoContainer" class="space-y-2">
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <section class="mb-8">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">Akses Cepat</h3>
-            <div class="grid md:grid-cols-4 gap-4">
-                <div class="bg-red-500 text-white p-4 rounded-xl card-hover text-center cursor-pointer" onclick="openModal('videoAccessModal')">
-                    <div class="text-2xl mb-2">▶️</div>
-                    <div class="font-semibold">Video Belajar</div>
-                    <div class="text-sm opacity-90">Video Pembelajaran</div>
-                </div>
-                <div class="bg-bio-green text-white p-4 rounded-xl card-hover text-center cursor-pointer" onclick="openModal('materiAccessModal')">
-                    <div class="text-2xl mb-2">📚</div>
-                    <div class="font-semibold">Materi Terkini</div>
-                    <div class="text-sm opacity-90">Sesuai Kelasmu</div>
-                </div>
-                <div class="bg-bio-blue text-white p-4 rounded-xl card-hover text-center cursor-pointer" onclick="openModal('quizAccessModal')">
-                    <div class="text-2xl mb-2">🧠</div>
-                    <div class="font-semibold">Latihan Soal</div>
-                    <div class="text-sm opacity-90">Pilih Kelas</div>
-                </div>
-                <div class="bg-purple-500 text-white p-4 rounded-xl card-hover text-center cursor-pointer" onclick="openModal('tkaAccessModal')">
-                    <div class="text-2xl mb-2">⏱️</div>
-                    <div class="font-semibold">Simulasi TKA</div>
-                    <div class="text-sm opacity-90">Pilih Soal</div>
-                </div>
-            </div>
-        </section>
+        <section class="mb-8">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Akses Cepat</h3>
+            <div class="grid md:grid-cols-4 gap-4">
+                <div class="bg-red-500 text-white p-4 rounded-xl card-hover text-center cursor-pointer" onclick="openModal('videoAccessModal')">
+                    <div class="text-2xl mb-2">▶️</div>
+                    <div class="font-semibold">Video Belajar</div>
+                    <div class="text-sm opacity-90">Video Pembelajaran</div>
+                </div>
+                <div class="bg-bio-green text-white p-4 rounded-xl card-hover text-center cursor-pointer" onclick="openModal('materiAccessModal')">
+                    <div class="text-2xl mb-2">📚</div>
+                    <div class="font-semibold">Materi Terkini</div>
+                    <div class="text-sm opacity-90">Sesuai Kelasmu</div>
+                </div>
+                <div class="bg-bio-blue text-white p-4 rounded-xl card-hover text-center cursor-pointer" onclick="openModal('quizAccessModal')">
+                    <div class="text-2xl mb-2">🧠</div>
+                    <div class="font-semibold">Latihan Soal</div>
+                    <div class="text-sm opacity-90">Pilih Kelas</div>
+                </div>
+                <div class="bg-purple-500 text-white p-4 rounded-xl card-hover text-center cursor-pointer" onclick="openModal('tkaAccessModal')">
+                    <div class="text-2xl mb-2">⏱️</div>
+                    <div class="font-semibold">Simulasi TKA</div>
+                    <div class="text-sm opacity-90">Pilih Soal</div>
+                </div>
+            </div>
+        </section>
 
-        <section id="materi" class="mb-8">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">Materi Pembelajaran</h3>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-32 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
-                        <span class="text-4xl">📚</span>
-                    </div>
-                    <div class="p-4">
-                        <h4 class="font-semibold text-gray-800 mb-2">Kelas 10</h4>
-                        <div class="flex justify-between items-center">
-                            <a href="https://drive.google.com/drive/folders/15ZHVdzLacpxH5UDkuQxBTc6NbM-Mu3QF?usp=drive_link" target="_blank" class="text-bio-green font-semibold text-sm">Lihat Materi →</a>
-                        </div>
-                    </div>
-                </div>
+        <section id="materi" class="mb-8">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Materi Pembelajaran</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="h-32 bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center">
+                        <span class="text-4xl">📚</span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">Kelas 10</h4>
+                        <div class="flex justify-between items-center">
+                            <a href="https://drive.google.com/drive/folders/15ZHVdzLacpxH5UDkuQxBTc6NbM-Mu3QF?usp=drive_link" target="_blank" class="text-bio-green font-semibold text-sm">Lihat Materi →</a>
+                        </div>
+                    </div>
+                </div>
 
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-32 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
-                        <span class="text-4xl">🔬</span>
-                    </div>
-                    <div class="p-4">
-                        <h4 class="font-semibold text-gray-800 mb-2">Kelas 11</h4>
-                        <div class="flex justify-between items-center">
-                            <a href="https://drive.google.com/drive/folders/1L4I5sKFT5oOp-9BSD8cGHxJ5tls-9wLi?usp=drive_link" target="_blank" class="text-bio-blue font-semibold text-sm">Lihat Materi →</a>
-                        </div>
-                    </div>
-                </div>
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="h-32 bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                        <span class="text-4xl">🔬</span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">Kelas 11</h4>
+                        <div class="flex justify-between items-center">
+                            <a href="https://drive.google.com/drive/folders/1L4I5sKFT5oOp-9BSD8cGHxJ5tls-9wLi?usp=drive_link" target="_blank" class="text-bio-blue font-semibold text-sm">Lihat Materi →</a>
+                        </div>
+                    </div>
+                </div>
 
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-32 bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
-                        <span class="text-4xl">🧬</span>
-                    </div>
-                    <div class="p-4">
-                        <h4 class="font-semibold text-gray-800 mb-2">Kelas 12</h4>
-                        <div class="flex justify-between items-center">
-                            <a href="https://drive.google.com/drive/folders/1Sfg9jMGDf0IFy8XgHIt-145ATjN9bBjG?usp=drive_link" target="_blank" class="text-purple-600 font-semibold text-sm">Lihat Materi →</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="h-32 bg-gradient-to-br from-purple-400 to-purple-600 flex items-center justify-center">
+                        <span class="text-4xl">🧬</span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">Kelas 12</h4>
+                        <div class="flex justify-between items-center">
+                            <a href="https://drive.google.com/drive/folders/1Sfg9jMGDf0IFy8XgHIt-145ATjN9bBjG?usp=drive_link" target="_blank" class="text-purple-600 font-semibold text-sm">Lihat Materi →</a>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-        <section id="video-belajar" class="mb-8">
-            <h3 class="text-xl font-bold text-gray-800 mb-4">Video Belajar</h3>
-            <div class="grid md:grid-cols-2 gap-6" id="videoContainer">
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-32 bg-red-500 flex items-center justify-center">
-                        <span class="text-4xl text-white">▶️</span>
-                    </div>
-                    <div class="p-4">
-                        <h4 class="font-semibold text-gray-800 mb-2">Video Belajar GeNius</h4>
-                        <a href="https://drive.google.com/file/d/1wAQbkMtNznHleicdh1_axS8FjthMRFlJ/view?usp=drive_link" target="_blank" class="text-red-600 font-semibold text-sm">Lihat Video →</a>
-                    </div>
-                </div>
+        <section id="video-belajar" class="mb-8">
+            <h3 class="text-xl font-bold text-gray-800 mb-4">Video Belajar</h3>
+            <div class="grid md:grid-cols-2 gap-6" id="videoContainer">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="h-32 bg-red-500 flex items-center justify-center">
+                        <span class="text-4xl text-white">▶️</span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">Video Belajar GeNius</h4>
+                        <a href="https://drive.google.com/file/d/1wAQbkMtNznHleicdh1_axS8FjthMRFlJ/view?usp=drive_link" target="_blank" class="text-red-600 font-semibold text-sm">Lihat Video →</a>
+                    </div>
+                </div>
 
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
-                    <div class="h-32 bg-red-500 flex items-center justify-center">
-                        <span class="text-4xl text-white">▶️</span>
-                    </div>
-                    <div class="p-4">
-                        <h4 class="font-semibold text-gray-800 mb-2">Video Belajar BioGenius</h4>
-                        <a href="https://drive.google.com/drive/folders/1HoTLS54h7jo3A-I3frWWHzfbz7zHAhkG?usp=sharing" target="_blank" class="text-red-600 font-semibold text-sm">Lihat Video →</a>
-                    </div>
-                </div>
-            </div>
-            <p class="text-sm text-center text-gray-500 mt-4">Konten dikelola oleh admin.</p>
-        </section>
-    </main>
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                    <div class="h-32 bg-red-500 flex items-center justify-center">
+                        <span class="text-4xl text-white">▶️</span>
+                    </div>
+                    <div class="p-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">Video Belajar BioGenius</h4>
+                        <a href="https://drive.google.com/drive/folders/1HoTLS54h7jo3A-I3frWWHzfbz7zHAhkG?usp=sharing" target="_blank" class="text-red-600 font-semibold text-sm">Lihat Video →</a>
+                    </div>
+                </div>
+            </div>
+            <p class="text-sm text-center text-gray-500 mt-4">Konten dikelola oleh admin.</p>
+        </section>
+    </main>
 
-    <footer class="bg-bio-dark-gray text-white py-4 text-center text-sm">
-        <p>
-            © 2025 BioGenius. Hak Cipta Dilindungi Undang-Undang.
-            <button onclick="openLoginModal()" class="text-gray-400 hover:text-white transition-colors ml-4 admin-panel-link">Login Admin</button>
-        </p>
-        <p class="mt-2 text-gray-400">Dibuat oleh: Pak Guru Luky</p>
-    </footer>
+    <footer class="bg-bio-dark-gray text-white py-4 text-center text-sm">
+        <p>
+            © 2025 BioGenius. Hak Cipta Dilindungi Undang-Undang.
+            <button onclick="openLoginModal()" class="text-gray-400 hover:text-white transition-colors ml-4 admin-panel-link">Login Admin</button>
+        </p>
+        <p class="mt-2 text-gray-400">Dibuat oleh: Pak Guru Luky</p>
+    </footer>
 
-    <script>
-        // Simulasi data dari server
-        const adminCredentials = {
-            username: 'bajuri39',
-            password: 'b6723eaw'
-        };
+    <script>
+        // Simulasi data dari server
+        const adminCredentials = {
+            username: 'bajuri39',
+            password: 'b6723eaw'
+        };
 
-        // Data yang disimpan di browser (akan hilang jika halaman direfresh)
-        let quizList = JSON.parse(localStorage.getItem('quizList')) || [
-            { title: 'Latihan Soal 10', url: 'https://drive.google.com/drive/folders/1nGYrDh2nJ7Kp4ZQXszUp3uDXNS4MII8C?usp=drive_link' },
-            { title: 'Latihan Soal 11', url: 'https://drive.google.com/drive/folders/1s6zRbItNHx8G7T0qOkmZADvQ7_ySnFi5?usp=drive_link' },
-            { title: 'Latihan Soal 12', url: 'https://drive.google.com/drive/folders/17jXEqhpMlkGXiVdZrVoDRR0QvF8GSyvg?usp=drive_link' }
-        ];
+        // Data yang disimpan di browser (akan hilang jika halaman direfresh)
+        let quizList = JSON.parse(localStorage.getItem('quizList')) || [
+            { title: 'Latihan Soal 10', url: 'https://drive.google.com/drive/folders/1nGYrDh2nJ7Kp4ZQXszUp3uDXNS4MII8C?usp=drive_link' },
+            { title: 'Latihan Soal 11', url: 'https://drive.google.com/drive/folders/1s6zRbItNHx8G7T0qOkmZADvQ7_ySnFi5?usp=drive_link' },
+            { title: 'Latihan Soal 12', url: 'https://drive.google.com/drive/folders/17jXEqhpMlkGXiVdZrVoDRR0QvF8GSyvg?usp=drive_link' }
+        ];
 
-        let tkaList = JSON.parse(localStorage.getItem('tkaList')) || [
-            { title: 'Info TKA', url: 'https://drive.google.com/drive/folders/17QXH71iaad5E-PlAPj7N9u4pHEHw7MCD?usp=drive_link' },
-            { title: 'Bank Soal TKA', url: 'https://drive.google.com/drive/folders/1AMfLzBCmbA_ulUi54XiBHLiXGSntscS3?usp=drive_link' },
-            { title: 'Simulasi TKA Kemendikdasmen', url: 'https://pusmendik.kemdikbud.go.id/tka/simulasi_tka' }
-        ];
-        
-        let ptnList = JSON.parse(localStorage.getItem('ptnList')) || [];
-        
-        let motivationQuote = localStorage.getItem('motivationQuote') || `"Ilmu Biologi adalah tentang kehidupan, begitu juga semangatmu."`;
+        let tkaList = JSON.parse(localStorage.getItem('tkaList')) || [
+            { title: 'Info TKA', url: 'https://drive.google.com/drive/folders/17QXH71iaad5E-PlAPj7N9u4pHEHw7MCD?usp=drive_link' },
+            { title: 'Bank Soal TKA', url: 'https://drive.google.com/drive/folders/1AMfLzBCmbA_ulUi54XiBHLiXGSntscS3?usp=drive_link' },
+            { title: 'Simulasi TKA Kemendikdasmen', url: 'https://pusmendik.kemdikbud.go.id/tka/simulasi_tka' }
+        ];
+        
+        let ptnList = JSON.parse(localStorage.getItem('ptnList')) || [];
+        
+        let motivationQuote = localStorage.getItem('motivationQuote') || `"Ilmu Biologi adalah tentang kehidupan, begitu juga semangatmu."`;
 
-        const materiList = [
-            { title: 'PPT 10', url: 'https://drive.google.com/drive/folders/1HW5DaWmw2IQO5WKNskX8LB6SrU8YzTnD?usp=sharing' },
-            { title: 'PPT 11', url: 'https://drive.google.com/drive/folders/1N2-TRlnWWNRmzrBrZubGPQ3275oUEqae?usp=drive_link' },
-            { title: 'PPT 12', url: 'https://drive.google.com/drive/folders/1EL_31Vyki1I0EsuCW7_f6iS33lW0HtMN?usp=drive_link' }
-        ];
+        const materiList = [
+            { title: 'PPT 10', url: 'https://drive.google.com/drive/folders/1HW5DaWmw2IQO5WKNskX8LB6SrU8YzTnD?usp=sharing' },
+            { title: 'PPT 11', url: 'https://drive.google.com/drive/folders/1N2-TRlnWWNRmzrBrZubGPQ3275oUEqae?usp=drive_link' },
+            { title: 'PPT 12', url: 'https://drive.google.com/drive/folders/1EL_31Vyki1I0EsuCW7_f6iS33lW0HtMN?usp=drive_link' }
+        ];
 
-        const videoList = [
-            { title: 'Video Belajar GeNius', url: 'https://drive.google.com/file/d/1wAQbkMtNznHleicdh1_axS8FjthMRFlJ/view?usp=drive_link' },
-            { title: 'Video Belajar BioGenius', url: 'https://drive.google.com/drive/folders/1HoTLS54h7jo3A-I3frWWHzfbz7zHAhkG?usp=sharing' }
-        ];
+        const videoList = [
+            { title: 'Video Belajar GeNius', url: 'https://drive.google.com/file/d/1wAQbkMtNznHleicdh1_axS8FjthMRFlJ/view?usp=drive_link' },
+            { title: 'Video Belajar BioGenius', url: 'https://drive.google.com/drive/folders/1HoTLS54h7jo3A-I3frWWHzfbz7zHAhkG?usp=sharing' }
+        ];
 
-        // Function untuk membuka dan menutup modal
-        function openModal(modalId) {
-            document.getElementById(modalId).classList.remove('hidden');
-            document.getElementById(modalId).classList.add('flex');
-        }
+        // Function untuk membuka dan menutup modal
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.remove('hidden');
+            document.getElementById(modalId).classList.add('flex');
+        }
 
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.add('hidden');
-            document.getElementById(modalId).classList.remove('flex');
-        }
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.add('hidden');
+            document.getElementById(modalId).classList.remove('flex');
+        }
 
-        function openLoginModal() {
-            openModal('loginModal');
-        }
+        function openLoginModal() {
+            openModal('loginModal');
+        }
 
-        function openAdminPanel() {
-            renderAdminLists();
-            openModal('adminPanelModal');
-        }
+        function openAdminPanel() {
+            renderAdminLists();
+            openModal('adminPanelModal');
+        }
 
-        // Admin Panel Functionality
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            if (username === adminCredentials.username && password === adminCredentials.password) {
-                closeModal('loginModal');
-                openAdminPanel();
-                alert('Login Admin Berhasil!');
-            } else {
-                alert('Username atau Password salah!');
-            }
-            document.getElementById('loginForm').reset();
-        });
+        // Admin Panel Functionality
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                closeModal('loginModal');
+                openAdminPanel();
+                alert('Login Admin Berhasil!');
+            } else {
+                alert('Username atau Password salah!');
+            }
+            document.getElementById('loginForm').reset();
+        });
 
-        // Add/Remove functions for different sections
-        function addLink(list, titleId, linkId, renderFn, storageKey) {
-            const title = document.getElementById(titleId).value;
-            const link = document.getElementById(linkId).value;
-            if (title && link) {
-                list.push({ title: title, url: link });
-                localStorage.setItem(storageKey, JSON.stringify(list));
-                renderFn();
-                document.getElementById(titleId).value = '';
-                document.getElementById(linkId).value = '';
-                alert('Tautan berhasil ditambahkan!');
-            } else {
-                alert('Judul dan link harus diisi!');
-            }
-        }
+        // Add/Remove functions for different sections
+        function addLink(list, titleId, linkId, renderFn, storageKey) {
+            const title = document.getElementById(titleId).value;
+            const link = document.getElementById(linkId).value;
+            if (title && link) {
+                list.push({ title: title, url: link });
+                localStorage.setItem(storageKey, JSON.stringify(list));
+                renderFn();
+                document.getElementById(titleId).value = '';
+                document.getElementById(linkId).value = '';
+                alert('Tautan berhasil ditambahkan!');
+            } else {
+                alert('Judul dan link harus diisi!');
+            }
+        }
 
-        function removeLink(list, index, renderFn, storageKey) {
-            list.splice(index, 1);
-            localStorage.setItem(storageKey, JSON.stringify(list));
-            renderFn();
-        }
+        function removeLink(list, index, renderFn, storageKey) {
+            list.splice(index, 1);
+            localStorage.setItem(storageKey, JSON.stringify(list));
+            renderFn();
+        }
 
-        // Render Functions
-        function renderAdminLists() {
-            const renderList = (containerId, list, removeFn, storageKey) => {
-                const container = document.getElementById(containerId);
-                container.innerHTML = '';
-                list.forEach((item, index) => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.className = 'border-l-4 border-bio-green pl-4 py-2 flex justify-between items-center';
-                    itemDiv.innerHTML = `
-                        <div>
-                            <h5 class="font-medium text-gray-800">${item.title}</h5>
-                            <p class="text-sm text-gray-500 truncate w-64">${item.url}</p>
-                        </div>
-                        <button onclick="removeLink(window.${containerId}, ${index}, window.${removeFn}, '${storageKey}')" class="text-red-500 hover:text-red-700 font-semibold text-sm">Hapus</button>
-                    `;
-                    container.appendChild(itemDiv);
-                });
-            };
+        // Render Functions
+        function renderAdminLists() {
+            const renderList = (containerId, list, removeFn, storageKey) => {
+                const container = document.getElementById(containerId);
+                container.innerHTML = '';
+                list.forEach((item, index) => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.className = 'border-l-4 border-bio-green pl-4 py-2 flex justify-between items-center';
+                    itemDiv.innerHTML = `
+                        <div>
+                            <h5 class="font-medium text-gray-800">${item.title}</h5>
+                            <p class="text-sm text-gray-500 truncate w-64">${item.url}</p>
+                        </div>
+                        <button onclick="removeLink(window.${containerId}, ${index}, window.${removeFn}, '${storageKey}')" class="text-red-500 hover:text-red-700 font-semibold text-sm">Hapus</button>
+                    `;
+                    container.appendChild(itemDiv);
+                });
+            };
 
-            renderList('quizList', quizList, 'renderAdminLists', 'quizList');
-            renderList('tkaList', tkaList, 'renderAdminLists', 'tkaList');
-            renderList('ptnList', ptnList, 'renderAdminLists', 'ptnList');
-            
-            // Set up form submissions
-            document.getElementById('motivationForm').onsubmit = (e) => {
-                e.preventDefault();
-                motivationQuote = document.getElementById('motivationText').value;
-                localStorage.setItem('motivationQuote', motivationQuote);
-                document.getElementById('motivationQuote').innerText = motivationQuote;
-                alert('Kata motivasi berhasil diperbarui!');
-            };
-            document.getElementById('addQuizForm').onsubmit = (e) => { e.preventDefault(); addLink(quizList, 'quizTitle', 'quizLink', renderAdminLists, 'quizList'); renderQuizLinks(); };
-            document.getElementById('addTKAForm').onsubmit = (e) => { e.preventDefault(); addLink(tkaList, 'tkaTitle', 'tkaLink', renderAdminLists, 'tkaList'); renderTKALinks(); };
-            document.getElementById('addPTNForm').onsubmit = (e) => { e.preventDefault(); addLink(ptnList, 'ptnTitle', 'ptnLink', renderAdminLists, 'ptnList'); renderPTNLinks(); };
-        }
-        
-        function renderMateriLinks() {
-            const container = document.getElementById('materiLinksContainer');
-            container.innerHTML = '';
-            materiList.forEach(item => {
-                const linkDiv = document.createElement('a');
-                linkDiv.href = item.url;
-                linkDiv.target = '_blank';
-                linkDiv.className = 'block w-full text-center p-4 border border-gray-200 rounded-lg hover:border-bio-green hover:bg-green-50 transition-colors font-semibold text-bio-green';
-                linkDiv.innerText = `${item.title}`;
-                container.appendChild(linkDiv);
-            });
-        }
+            renderList('quizList', quizList, 'renderAdminLists', 'quizList');
+            renderList('tkaList', tkaList, 'renderAdminLists', 'tkaList');
+            renderList('ptnList', ptnList, 'renderAdminLists', 'ptnList');
+            
+            // Set up form submissions
+            document.getElementById('motivationForm').onsubmit = (e) => {
+                e.preventDefault();
+                motivationQuote = document.getElementById('motivationText').value;
+                localStorage.setItem('motivationQuote', motivationQuote);
+                document.getElementById('motivationQuote').innerText = motivationQuote;
+                alert('Kata motivasi berhasil diperbarui!');
+            };
+            document.getElementById('addQuizForm').onsubmit = (e) => { e.preventDefault(); addLink(quizList, 'quizTitle', 'quizLink', renderAdminLists, 'quizList'); renderQuizLinks(); };
+            document.getElementById('addTKAForm').onsubmit = (e) => { e.preventDefault(); addLink(tkaList, 'tkaTitle', 'tkaLink', renderAdminLists, 'tkaList'); renderTKALinks(); };
+            document.getElementById('addPTNForm').onsubmit = (e) => { e.preventDefault(); addLink(ptnList, 'ptnTitle', 'ptnLink', renderAdminLists, 'ptnList'); renderPTNLinks(); };
+        }
+        
+        function renderMateriLinks() {
+            const container = document.getElementById('materiLinksContainer');
+            container.innerHTML = '';
+            materiList.forEach(item => {
+                const linkDiv = document.createElement('a');
+                linkDiv.href = item.url;
+                linkDiv.target = '_blank';
+                linkDiv.className = 'block w-full text-center p-4 border border-gray-200 rounded-lg hover:border-bio-green hover:bg-green-50 transition-colors font-semibold text-bio-green';
+                linkDiv.innerText = `${item.title}`;
+                container.appendChild(linkDiv);
+            });
+        }
 
-        function renderQuizLinks() {
-            const container = document.getElementById('quizLinksContainer');
-            container.innerHTML = '';
-            quizList.forEach(item => {
-                const linkDiv = document.createElement('a');
-                linkDiv.href = item.url;
-                linkDiv.target = '_blank';
-                linkDiv.className = 'block w-full text-center p-4 border border-gray-200 rounded-lg hover:border-bio-blue hover:bg-blue-50 transition-colors font-semibold text-bio-blue';
-                linkDiv.innerText = `${item.title}`;
-                container.appendChild(linkDiv);
-            });
-        }
+        function renderQuizLinks() {
+            const container = document.getElementById('quizLinksContainer');
+            container.innerHTML = '';
+            quizList.forEach(item => {
+                const linkDiv = document.createElement('a');
+                linkDiv.href = item.url;
+                linkDiv.target = '_blank';
+                linkDiv.className = 'block w-full text-center p-4 border border-gray-200 rounded-lg hover:border-bio-blue hover:bg-blue-50 transition-colors font-semibold text-bio-blue';
+                linkDiv.innerText = `${item.title}`;
+                container.appendChild(linkDiv);
+            });
+        }
 
-        function renderTKALinks() {
-            const container = document.getElementById('tkaLinksContainer');
-            container.innerHTML = '';
-            tkaList.forEach(item => {
-                const linkDiv = document.createElement('a');
-                linkDiv.href = item.url;
-                linkDiv.target = '_blank';
-                linkDiv.className = 'block w-full text-center p-4 border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-colors font-semibold text-purple-600';
-                linkDiv.innerText = item.title;
-                container.appendChild(linkDiv);
-            });
-        }
+        function renderTKALinks() {
+            const container = document.getElementById('tkaLinksContainer');
+            container.innerHTML = '';
+            tkaList.forEach(item => {
+                const linkDiv = document.createElement('a');
+                linkDiv.href = item.url;
+                linkDiv.target = '_blank';
+                linkDiv.className = 'block w-full text-center p-4 border border-gray-200 rounded-lg hover:border-purple-500 hover:bg-purple-50 transition-colors font-semibold text-purple-600';
+                linkDiv.innerText = item.title;
+                container.appendChild(linkDiv);
+            });
+        }
 
-        function renderPTNLinks() {
-            const container = document.getElementById('ptnInfoContainer');
-            container.innerHTML = '';
-            ptnList.forEach(item => {
-                const linkDiv = document.createElement('a');
-                linkDiv.href = item.url;
-                linkDiv.target = '_blank';
-                linkDiv.className = 'block text-sm text-gray-700 underline hover:text-bio-blue';
-                linkDiv.innerText = `➤ ${item.title}`;
-                container.appendChild(linkDiv);
-            });
-        }
-        
-        function renderVideoLinks() {
-            const container = document.getElementById('videoLinksContainer');
-            container.innerHTML = '';
-            videoList.forEach(item => {
-                const linkDiv = document.createElement('a');
-                linkDiv.href = item.url;
-                linkDiv.target = '_blank';
-                linkDiv.className = 'block w-full text-center p-4 border border-gray-200 rounded-lg hover:border-red-500 hover:bg-red-50 transition-colors font-semibold text-red-600';
-                linkDiv.innerText = `${item.title}`;
-                container.appendChild(linkDiv);
-            });
-        }
+        function renderPTNLinks() {
+            const container = document.getElementById('ptnInfoContainer');
+            container.innerHTML = '';
+            ptnList.forEach(item => {
+                const linkDiv = document.createElement('a');
+                linkDiv.href = item.url;
+                linkDiv.target = '_blank';
+                linkDiv.className = 'block text-sm text-gray-700 underline hover:text-bio-blue';
+                linkDiv.innerText = `➤ ${item.title}`;
+                container.appendChild(linkDiv);
+            });
+        }
+        
+        function renderVideoLinks() {
+            const container = document.getElementById('videoLinksContainer');
+            container.innerHTML = '';
+            videoList.forEach(item => {
+                const linkDiv = document.createElement('a');
+                linkDiv.href = item.url;
+                linkDiv.target = '_blank';
+                linkDiv.className = 'block w-full text-center p-4 border border-gray-200 rounded-lg hover:border-red-500 hover:bg-red-50 transition-colors font-semibold text-red-600';
+                linkDiv.innerText = `${item.title}`;
+                container.appendChild(linkDiv);
+            });
+        }
 
-        function initializeAll() {
-            renderMateriLinks();
-            renderQuizLinks();
-            renderTKALinks();
-            renderPTNLinks();
-            renderVideoLinks();
-            document.getElementById('motivationQuote').innerText = motivationQuote;
-        }
+        function initializeAll() {
+            renderMateriLinks();
+            renderQuizLinks();
+            renderTKALinks();
+            renderPTNLinks();
+            renderVideoLinks();
+            document.getElementById('motivationQuote').innerText = motivationQuote;
+        }
 
-        // Initialize on page load
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeAll();
-        });
-    </script>
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeAll();
+        });
+    </script>
 </body>
 </html>
