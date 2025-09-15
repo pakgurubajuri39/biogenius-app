@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BioGenius - Platform Pembelajaran Biologi SMA</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="style.css">
     <script>
         tailwind.config = {
             theme: {
@@ -19,33 +20,6 @@
             }
         }
     </script>
-    <style>
-        .gradient-bg {
-            background: linear-gradient(135deg, #10B981 0%, #3B82F6 100%);
-        }
-        .card-hover {
-            transition: all 0.3s ease;
-        }
-        .card-hover:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-        }
-        .progress-bar {
-            background: linear-gradient(90deg, #10B981 0%, #3B82F6 100%);
-        }
-        .admin-panel-link {
-            transition: color 0.3s;
-        }
-        .admin-panel-link:hover {
-            color: #d1d5db;
-        }
-        .logo {
-            width: 32px;
-            height: 32px;
-            object-fit: cover;
-            border-radius: 9999px;
-        }
-    </style>
 </head>
 <body class="bg-gray-50 font-sans">
     <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
@@ -217,15 +191,15 @@
 
                 <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
                     <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-gray-800">INFO PTN INDONESIA</h3>
+                        <h3 class="font-semibold text-gray-800">Info PTN</h3>
                         <span class="text-2xl">🎓</span>
                     </div>
                     <div class="flex flex-col space-y-2">
-                        <a href="https://snpmb.bppp.kemdikbud.go.id/" target="_blank" class="block text-sm text-gray-700 underline hover:text-bio-blue">
-                            ➤ Cek Info SNPMB disini!
+                        <a href="https://huggingface.co/spaces/pakguru/Informasi_PTN" target="_blank" class="block text-sm text-gray-700 underline hover:text-bio-blue">
+                            ➤ Informasi Database PTN
                         </a>
-                        <a href="https://huggingface.co/spaces/pakguru/Informasi_PTN" target="_blank" class="block text-sm text-gray-700 underline hover:text-bio-blue">
-                            ➤ Database PTN Indonesia
+                        <a href="https://snpmb.bppp.kemdikbud.go.id/" target="_blank" class="block text-sm text-gray-700 underline hover:text-bio-blue">
+                            ➤ Cek Info SNPMB
                         </a>
                         <div id="ptnInfoContainer" class="space-y-2">
                             </div>
@@ -345,9 +319,9 @@
 
         // Data yang disimpan di browser (akan hilang jika halaman direfresh)
         let quizList = JSON.parse(localStorage.getItem('quizList')) || [
-            { title: 'Latihan Soal 10', url: 'https://drive.google.com/drive/folders/1nGYrDh2nJ7Kp4ZQXszUp3uDXNS4MII8C?usp=drive_link' },
-            { title: 'Latihan Soal 11', url: 'https://drive.google.com/drive/folders/1s6zRbItNHx8G7T0qOkmZADvQ7_ySnFi5?usp=drive_link' },
-            { title: 'Latihan Soal 12', url: 'https://drive.google.com/drive/folders/17jXEqhpMlkGXiVdZrVoDRR0QvF8GSyvg?usp=drive_link' }
+            { title: 'LatSol 10', url: 'https://drive.google.com/drive/folders/1nGYrDh2nJ7Kp4ZQXszUp3uDXNS4MII8C?usp=drive_link' },
+            { title: 'LatSol 11', url: 'https://drive.google.com/drive/folders/1s6zRbItNHx8G7T0qOkmZADvQ7_ySnFi5?usp=drive_link' },
+            { title: 'LatSol 12', url: 'https://drive.google.com/drive/folders/17jXEqhpMlkGXiVdZrVoDRR0QvF8GSyvg?usp=drive_link' }
         ];
 
         let tkaList = JSON.parse(localStorage.getItem('tkaList')) || [
