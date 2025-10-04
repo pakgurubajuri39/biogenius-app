@@ -5,16 +5,139 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BioGenius - Platform Pembelajaran Biologi SMA</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #2D5BFF 0%, #00C2FF 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #2D5BFF 0%, #00C2FF 100%);
+            color: white;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(45, 91, 255, 0.3);
+        }
+        .btn-secondary {
+            background: #F0F2F5;
+            color: #2D5BFF;
+            font-weight: 600;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        .btn-secondary:hover {
+            background: #E4E7EB;
+        }
+        .user-menu {
+            position: relative;
+        }
+        .user-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 8px 0;
+            min-width: 150px;
+            z-index: 100;
+            display: none;
+        }
+        .user-dropdown.show {
+            display: block;
+        }
+        .user-dropdown button {
+            width: 100%;
+            text-align: left;
+            padding: 8px 16px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .user-dropdown button:hover {
+            background: #F0F2F5;
+        }
+        .feature-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+        .login-container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            max-width: 400px;
+            width: 100%;
+        }
+        .login-header {
+            background: linear-gradient(135deg, #2D5BFF 0%, #00C2FF 100%);
+            padding: 30px;
+            text-align: center;
+            color: white;
+        }
+        .login-body {
+            padding: 30px;
+        }
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #E4E7EB;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .form-input:focus {
+            border-color: #2D5BFF;
+            box-shadow: 0 0 0 3px rgba(45, 91, 255, 0.1);
+            outline: none;
+        }
+    </style>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
                         'bio-green': '#10B981',
-                        'bio-blue': '#3B82F6',
+                        'bio-blue': '#2D5BFF',
                         'bio-light': '#F0FDF4',
-                        'bio-dark-gray': '#4B5563'
+                        'bio-dark-gray': '#4B5563',
+                        'ruang-blue': '#2D5BFF',
+                        'ruang-light-blue': '#00C2FF',
+                        'ruang-gray': '#F0F2F5'
                     }
                 }
             }
@@ -22,23 +145,33 @@
     </script>
 </head>
 <body class="bg-gray-50 font-sans">
-    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-8 m-4 w-full max-w-sm shadow-lg">
-            <h3 class="text-2xl font-bold text-gray-800 mb-6 text-center">Login Admin</h3>
-            <form id="loginForm">
-                <div class="mb-4">
-                    <label for="username" class="block text-gray-700 font-semibold mb-2">Username</label>
-                    <input type="text" id="username" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-bio-blue" required>
+    <!-- Login Modal -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="login-container">
+            <div class="login-header">
+                <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center mx-auto mb-4">
+                    <span class="text-bio-blue font-bold text-2xl">🧬</span>
                 </div>
-                <div class="mb-6">
-                    <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
-                    <input type="password" id="password" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-bio-blue" required>
-                </div>
-                <button type="submit" class="w-full bg-bio-blue text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transition-colors">Login</button>
-            </form>
+                <h1 class="text-2xl font-bold mb-2">BioGenius</h1>
+                <p class="opacity-90">Masuk untuk mengakses materi pembelajaran</p>
+            </div>
+            <div class="login-body">
+                <form id="loginForm">
+                    <div class="mb-4">
+                        <label for="username" class="block text-gray-700 font-semibold mb-2">Username</label>
+                        <input type="text" id="username" class="form-input" placeholder="Masukkan username" required>
+                    </div>
+                    <div class="mb-6">
+                        <label for="password" class="block text-gray-700 font-semibold mb-2">Password</label>
+                        <input type="password" id="password" class="form-input" placeholder="Masukkan password" required>
+                    </div>
+                    <button type="submit" class="w-full btn-primary py-3">Masuk</button>
+                </form>
+            </div>
         </div>
     </div>
 
+    <!-- Admin Panel Modal -->
     <div id="adminPanelModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white rounded-xl p-6 m-4 w-full max-w-3xl max-h-[90vh] overflow-y-auto">
             <div class="flex justify-between items-center mb-4">
@@ -93,6 +226,7 @@
         </div>
     </div>
 
+    <!-- Materi Access Modal -->
     <div id="materiAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
             <div class="flex justify-between items-center mb-4">
@@ -104,6 +238,7 @@
         </div>
     </div>
 
+    <!-- Quiz Access Modal -->
     <div id="quizAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
             <div class="flex justify-between items-center mb-4">
@@ -115,6 +250,7 @@
         </div>
     </div>
 
+    <!-- TKA Access Modal -->
     <div id="tkaAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
             <div class="flex justify-between items-center mb-4">
@@ -126,6 +262,7 @@
         </div>
     </div>
 
+    <!-- Video Access Modal -->
     <div id="videoAccessModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white rounded-xl p-6 m-4 w-full max-w-xl">
             <div class="flex justify-between items-center mb-4">
@@ -137,12 +274,13 @@
         </div>
     </div>
 
+    <!-- Header -->
     <header class="gradient-bg text-white shadow-lg">
         <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
                     <div class="w-10 h-10 bg-white rounded-full flex items-center justify-center">
-                        <span class="text-bio-green font-bold text-xl">🧬</span>
+                        <span class="text-bio-blue font-bold text-xl">🧬</span>
                     </div>
                     <h1 class="text-2xl font-bold">BioGenius</h1>
                 </div>
@@ -152,48 +290,59 @@
                     <a href="#video-belajar" class="hover:text-bio-light transition-colors">Video Belajar</a>
                 </nav>
                 <div class="flex items-center space-x-4">
+                    <div class="user-menu">
+                        <button id="userMenuButton" class="flex items-center space-x-2 bg-white bg-opacity-20 px-3 py-1 rounded-lg">
+                            <span id="userNameDisplay">Guest</span>
+                            <span>▼</span>
+                        </button>
+                        <div id="userDropdown" class="user-dropdown">
+                            <button id="logoutButton">Keluar</button>
+                        </div>
+                    </div>
                     <img src="https://i.ibb.co/L6V2y6L/PAK-AI.jpg" alt="Logo Pak Guru AI" class="logo">
                 </div>
             </div>
         </div>
     </header>
 
+    <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
         <section id="dashboard" class="mb-8">
             <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
-                <h2 class="text-2xl font-bold text-gray-800 mb-2">Selamat Datang, Guys! 👋</h2>
+                <h2 class="text-2xl font-bold text-gray-800 mb-2">Selamat Datang, <span id="welcomeUser">Guys!</span> 👋</h2>
                 <p class="text-gray-600">Mari lanjutkan perjalanan belajar Biologi kalian hari ini</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-6 mb-8">
-                <div class="bg-white rounded-xl shadow-lg p-6 card-hover cursor-pointer" onclick="window.open('https://huggingface.co/spaces/pakguru/Gurunya.Ai', '_blank');">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-gray-800">Tanya Pak Guru AI</h3>
-                        <span class="text-2xl">🤖</span>
+                <!-- Tanya Pak Guru AI Card -->
+                <div class="feature-card cursor-pointer" onclick="window.open('https://huggingface.co/spaces/pakguru/Gurunya.Ai', '_blank');">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #8B5CF6 0%, #D946EF 100%);">
+                        <span class="text-white text-2xl">🤖</span>
                     </div>
-                    <div class="mb-2">
-                        <p class="text-sm text-gray-600">Tanyakan pertanyaan Biologi Anda dan dapatkan jawaban instan.</p>
-                    </div>
-                    <div class="flex justify-between items-center mt-4">
+                    <h3 class="font-semibold text-gray-800 mb-2">Tanya Pak Guru AI</h3>
+                    <p class="text-sm text-gray-600 mb-4">Tanyakan pertanyaan Biologi Anda dan dapatkan jawaban instan.</p>
+                    <div class="flex justify-between items-center">
                         <span class="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">Interaktif</span>
                         <span class="text-bio-blue font-semibold text-sm">Mulai →</span>
                     </div>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-gray-800">Kata Motivasi</h3>
-                        <span class="text-2xl">✨</span>
+                <!-- Kata Motivasi Card -->
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #10B981 0%, #34D399 100%);">
+                        <span class="text-white text-2xl">✨</span>
                     </div>
-                    <div id="motivationQuote" class="text-xl font-bold text-bio-green mb-2">"Ilmu Biologi adalah tentang kehidupan, begitu juga semangatmu."</div>
+                    <h3 class="font-semibold text-gray-800 mb-2">Kata Motivasi</h3>
+                    <div id="motivationQuote" class="text-lg font-bold text-bio-green mb-2">"Ilmu Biologi adalah tentang kehidupan, begitu juga semangatmu."</div>
                     <p class="text-sm text-gray-500">Ayo, semangat belajar!</p>
                 </div>
 
-                <div class="bg-white rounded-xl shadow-lg p-6 card-hover">
-                    <div class="flex items-center justify-between mb-4">
-                        <h3 class="font-semibold text-gray-800">Info PTN</h3>
-                        <span class="text-2xl">🎓</span>
+                <!-- Info PTN Card -->
+                <div class="feature-card">
+                    <div class="feature-icon" style="background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 100%);">
+                        <span class="text-white text-2xl">🎓</span>
                     </div>
+                    <h3 class="font-semibold text-gray-800 mb-2">Info PTN</h3>
                     <div class="flex flex-col space-y-2">
                         <a href="https://huggingface.co/" target="_blank" class="block text-sm text-gray-700 underline hover:text-bio-blue">
                             ➤ Informasi Database PTN
@@ -202,7 +351,34 @@
                             ➤ INFO SNPMB 2026
                         </a>
                         <div id="ptnInfoContainer" class="space-y-2">
-                            </div>
+                            <!-- PTN info will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin-only PTN Cards -->
+            <div id="adminPTNCards" class="hidden">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Analisis & Informasi PTN</h3>
+                <div class="grid md:grid-cols-2 gap-6 mb-8">
+                    <!-- Analisis Skor UTBK Card -->
+                    <div class="feature-card">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #EF4444 0%, #F87171 100%);">
+                            <span class="text-white text-2xl">📊</span>
+                        </div>
+                        <h3 class="font-semibold text-gray-800 mb-2">Analisis Skor UTBK</h3>
+                        <p class="text-sm text-gray-600 mb-4">Analisis mendalam tentang skor UTBK untuk persiapan masuk PTN.</p>
+                        <a href="https://huggingface.co/spaces/pakguru/analisis-skor-utbk" target="_blank" class="inline-block text-bio-blue font-semibold text-sm">Akses Analisis →</a>
+                    </div>
+
+                    <!-- Informasi PTN Indonesia Card -->
+                    <div class="feature-card">
+                        <div class="feature-icon" style="background: linear-gradient(135deg, #3B82F6 0%, #60A5FA 100%);">
+                            <span class="text-white text-2xl">🏛️</span>
+                        </div>
+                        <h3 class="font-semibold text-gray-800 mb-2">Informasi Perguruan Tinggi Negeri (PTN) Indonesia</h3>
+                        <p class="text-sm text-gray-600 mb-4">Informasi lengkap tentang berbagai PTN di Indonesia.</p>
+                        <a href="https://huggingface.co/spaces/pakguru/Informasi_PTN" target="_blank" class="inline-block text-bio-blue font-semibold text-sm">Lihat Informasi →</a>
                     </div>
                 </div>
             </div>
@@ -302,19 +478,30 @@
         </section>
     </main>
 
-    <footer class="bg-bio-dark-gray text-white py-4 text-center text-sm">
-        <p>
-            © 2025 BioGenius. Hak Cipta Dilindungi Undang-Undang.
-            <button onclick="openLoginModal()" class="text-gray-400 hover:text-white transition-colors ml-4 admin-panel-link">Login Admin</button>
-        </p>
-        <p class="mt-2 text-gray-400">Dibuat oleh: Pak Guru Luky</p>
+    <footer class="bg-bio-dark-gray text-white py-6 text-center">
+        <div class="container mx-auto">
+            <p class="mb-2">by. Pak Guru AI</p>
+            <p class="mb-2">Research and Development GenZi Education Center</p>
+            <p class="mb-4">Hak Cipta Dilindungi Undang-Undang © 2025</p>
+            <p class="text-sm text-gray-400 max-w-2xl mx-auto">
+                Seluruh materi dan konten dalam platform ini merupakan hak milik GenZi Education Center dan tidak diperkenankan untuk disalin atau disebarluaskan tanpa izin tertulis.
+            </p>
+        </div>
     </footer>
 
     <script>
         // Simulasi data dari server
-        const adminCredentials = {
-            username: 'bajuri39',
-            password: 'b6723eaw'
+        const userCredentials = {
+            siswa: {
+                username: 'murid',
+                password: 'murid123',
+                role: 'siswa'
+            },
+            admin: {
+                username: 'admin',
+                password: 'bajuri39',
+                role: 'admin'
+            }
         };
 
         // Data yang disimpan di browser (akan hilang jika halaman direfresh)
@@ -345,6 +532,9 @@
             { title: 'Video Belajar BioGenius', url: 'https://drive.google.com/drive/folders/1HoTLS54h7jo3A-I3frWWHzfbz7zHAhkG?usp=sharing' }
         ];
 
+        // State aplikasi
+        let currentUser = null;
+
         // Function untuk membuka dan menutup modal
         function openModal(modalId) {
             document.getElementById(modalId).classList.remove('hidden');
@@ -365,20 +555,80 @@
             openModal('adminPanelModal');
         }
 
-        // Admin Panel Functionality
+        // Login functionality
         document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
-            if (username === adminCredentials.username && password === adminCredentials.password) {
+            
+            let user = null;
+            
+            // Check admin credentials
+            if (username === userCredentials.admin.username && password === userCredentials.admin.password) {
+                user = userCredentials.admin;
+            }
+            // Check student credentials
+            else if (username === userCredentials.siswa.username && password === userCredentials.siswa.password) {
+                user = userCredentials.siswa;
+            }
+            
+            if (user) {
+                currentUser = user;
                 closeModal('loginModal');
-                openAdminPanel();
-                alert('Login Admin Berhasil!');
+                updateUIForUser();
+                alert(`Login berhasil! Selamat datang ${user.role === 'admin' ? 'Admin' : 'Siswa'}`);
             } else {
                 alert('Username atau Password salah!');
             }
             document.getElementById('loginForm').reset();
         });
+
+        // Logout functionality
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            currentUser = null;
+            updateUIForUser();
+            alert('Anda telah berhasil logout');
+        });
+
+        // User menu toggle
+        document.getElementById('userMenuButton').addEventListener('click', function() {
+            document.getElementById('userDropdown').classList.toggle('show');
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            const userMenu = document.querySelector('.user-menu');
+            if (!userMenu.contains(event.target)) {
+                document.getElementById('userDropdown').classList.remove('show');
+            }
+        });
+
+        // Update UI based on user role
+        function updateUIForUser() {
+            const userNameDisplay = document.getElementById('userNameDisplay');
+            const welcomeUser = document.getElementById('welcomeUser');
+            const adminPTNCards = document.getElementById('adminPTNCards');
+            
+            if (currentUser) {
+                userNameDisplay.textContent = currentUser.role === 'admin' ? 'Admin' : 'Siswa';
+                welcomeUser.textContent = currentUser.role === 'admin' ? 'Admin!' : 'Guys!';
+                
+                // Show/hide admin-only PTN cards
+                if (currentUser.role === 'admin') {
+                    adminPTNCards.classList.remove('hidden');
+                } else {
+                    adminPTNCards.classList.add('hidden');
+                }
+                
+                // Hide login modal if open
+                closeModal('loginModal');
+            } else {
+                userNameDisplay.textContent = 'Guest';
+                welcomeUser.textContent = 'Guys!';
+                adminPTNCards.classList.add('hidden');
+                openLoginModal();
+            }
+        }
 
         // Add/Remove functions for different sections
         function addLink(list, titleId, linkId, renderFn, storageKey) {
@@ -510,6 +760,9 @@
             renderPTNLinks();
             renderVideoLinks();
             document.getElementById('motivationQuote').innerText = motivationQuote;
+            
+            // Initialize user state
+            updateUIForUser();
         }
 
         // Initialize on page load
